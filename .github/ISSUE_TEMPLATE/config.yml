@@ -1,0 +1,9 @@
+# Debe permanecer en true: el formulario en línea envía a /issues/new
+# (issue en blanco, sin plantilla) con title/body/labels precompletados;
+# si se desactiva, GitHub redirige al selector de plantillas e ignora
+# esos parámetros, rompiendo el envío automático.
+blank_issues_enabled: true
+contact_links:
+  - name: "🧬 Formulario en línea de requisitos"
+    url: https://pol4720.github.io/IATools/formulario-requisitos/
+    about: "Vía recomendada para responder: guarda su progreso automáticamente y organiza sus respuestas por usted."
