@@ -1,0 +1,562 @@
+{
+  "version": "1.0.0",
+  "id_formulario": "requisitos-experto-regulatorio-ia",
+  "meta": {
+    "titulo_es": "Formulario de requisitos: Experto Regulatorio Virtual",
+    "titulo_en": "Requirements form: Virtual Regulatory Expert",
+    "subtitulo_es": "Instituto Finlay de Vacunas — Proyecto de Inteligencia Artificial",
+    "subtitulo_en": "Instituto Finlay de Vacunas — Artificial Intelligence Project",
+    "introduccion_es": [
+      "Gracias por dedicar unos minutos a este formulario. Su experiencia es la pieza más importante para diseñar una herramienta de inteligencia artificial capaz de actuar como un experto en marco regulatorio biofarmacéutico y biotecnológico, siempre actualizado, tanto a nivel internacional como en Cuba.",
+      "No necesita ningún conocimiento técnico de informática o de inteligencia artificial para responder. Piense simplemente en lo que le gustaría pedirle a un colega experto que estuviera disponible para usted en cualquier momento, con toda la información al día.",
+      "No hay respuestas correctas o incorrectas. Puede responder con la profundidad que desee, dejar preguntas en blanco y volver más tarde: sus respuestas se guardan automáticamente en este mismo dispositivo mientras completa el formulario.",
+      "Al final encontrará el botón para enviar sus respuestas de forma definitiva."
+    ],
+    "introduccion_en": [
+      "Thank you for taking a few minutes for this form. Your expertise is the most important piece for designing an artificial intelligence tool able to act as an expert in biopharmaceutical and biotechnology regulatory affairs, always up to date, both internationally and in Cuba.",
+      "You do not need any technical knowledge of computing or artificial intelligence to answer. Simply think about what you would ask an expert colleague who was available to you at any time, with all the information current.",
+      "There are no right or wrong answers. You may answer in as much depth as you like, leave questions blank and come back later: your answers are saved automatically on this device while you fill out the form.",
+      "At the end you will find the button to submit your answers for good."
+    ],
+    "tiempo_estimado_es": "Tiempo estimado: 20 a 35 minutos (puede pausar y continuar cuando quiera)",
+    "tiempo_estimado_en": "Estimated time: 20 to 35 minutes (you may pause and resume at any time)"
+  },
+  "secciones": [
+    {
+      "id": "identificacion",
+      "icono": "🧑‍🔬",
+      "titulo_es": "Sobre usted",
+      "titulo_en": "About you",
+      "descripcion_es": "Esta información nos ayuda a entender desde qué experiencia responde. Puede dejarla en blanco si prefiere responder de forma anónima.",
+      "descripcion_en": "This information helps us understand the experience behind your answers. You may leave it blank if you prefer to answer anonymously.",
+      "campos": [
+        {
+          "id": "nombre",
+          "tipo": "texto",
+          "requerido": false,
+          "etiqueta_es": "Nombre y apellidos",
+          "etiqueta_en": "Full name",
+          "ayuda_es": "Opcional. Si prefiere responder de forma anónima, déjelo en blanco.",
+          "ayuda_en": "Optional. Leave it blank if you prefer to answer anonymously."
+        },
+        {
+          "id": "area_especialidad",
+          "tipo": "texto",
+          "requerido": false,
+          "etiqueta_es": "Área o especialidad",
+          "etiqueta_en": "Area or specialty",
+          "placeholder_es": "Ej.: Asuntos regulatorios, Control de la calidad, Investigación clínica, Farmacovigilancia…",
+          "placeholder_en": "E.g.: Regulatory affairs, Quality control, Clinical research, Pharmacovigilance…",
+          "ayuda_es": "Su especialidad concreta dentro del sector biofarmacéutico o biotecnológico.",
+          "ayuda_en": "Your specific specialty within the biopharmaceutical or biotechnology field."
+        },
+        {
+          "id": "rol_actual",
+          "tipo": "texto",
+          "requerido": false,
+          "etiqueta_es": "Cargo o rol actual",
+          "etiqueta_en": "Current position or role",
+          "ayuda_es": "Por ejemplo: especialista, jefe de departamento, asesor, investigador titular, etc.",
+          "ayuda_en": "For example: specialist, department head, advisor, senior researcher, etc."
+        },
+        {
+          "id": "anos_experiencia",
+          "tipo": "unica",
+          "requerido": false,
+          "etiqueta_es": "Años de experiencia en el sector regulatorio biofarmacéutico/biotecnológico",
+          "etiqueta_en": "Years of experience in the biopharmaceutical/biotechnology regulatory field",
+          "opciones": [
+            {"valor": "menos5", "es": "Menos de 5 años", "en": "Less than 5 years"},
+            {"valor": "5a15", "es": "Entre 5 y 15 años", "en": "Between 5 and 15 years"},
+            {"valor": "15a30", "es": "Entre 15 y 30 años", "en": "Between 15 and 30 years"},
+            {"valor": "mas30", "es": "Más de 30 años", "en": "More than 30 years"}
+          ]
+        },
+        {
+          "id": "contacto_opcional",
+          "tipo": "texto",
+          "requerido": false,
+          "etiqueta_es": "Correo electrónico o vía de contacto (opcional)",
+          "etiqueta_en": "Email or contact method (optional)",
+          "ayuda_es": "Solo si desea que le contactemos para ampliar alguna respuesta.",
+          "ayuda_en": "Only if you would like us to contact you to expand on any answer."
+        }
+      ]
+    },
+    {
+      "id": "alcance",
+      "icono": "🌐",
+      "titulo_es": "Alcance regulatorio de interés",
+      "titulo_en": "Regulatory scope of interest",
+      "descripcion_es": "Ayúdenos a delimitar sobre qué productos y marcos normativos debería ser experto este asistente.",
+      "descripcion_en": "Help us define which products and regulatory frameworks this assistant should be expert in.",
+      "campos": [
+        {
+          "id": "productos_interes",
+          "tipo": "multiple",
+          "requerido": false,
+          "permite_otro": true,
+          "etiqueta_es": "¿Sobre qué tipos de productos o procesos necesita orientación regulatoria?",
+          "etiqueta_en": "Which products or processes do you need regulatory guidance on?",
+          "opciones": [
+            {"valor": "vacunas", "es": "Vacunas", "en": "Vaccines"},
+            {"valor": "biofarmacos", "es": "Anticuerpos monoclonales y otros biofármacos", "en": "Monoclonal antibodies and other biopharmaceuticals"},
+            {"valor": "dispositivos", "es": "Dispositivos y equipos médicos", "en": "Medical devices and equipment"},
+            {"valor": "ensayos_clinicos", "es": "Ensayos clínicos", "en": "Clinical trials"},
+            {"valor": "ia_producto", "es": "Software o IA como producto regulado", "en": "Software or AI as a regulated product"},
+            {"valor": "bpm", "es": "Buenas Prácticas de Manufactura (BPM/GMP)", "en": "Good Manufacturing Practices (GMP)"},
+            {"valor": "farmacovigilancia", "es": "Farmacovigilancia y seguridad post-comercialización", "en": "Pharmacovigilance and post-marketing safety"},
+            {"valor": "bioseguridad", "es": "Bioseguridad y bioética", "en": "Biosafety and bioethics"},
+            {"valor": "propiedad_intelectual", "es": "Propiedad intelectual y patentes", "en": "Intellectual property and patents"}
+          ]
+        },
+        {
+          "id": "marcos_regulatorios",
+          "tipo": "multiple",
+          "requerido": false,
+          "permite_otro": true,
+          "etiqueta_es": "¿Qué marcos o autoridades regulatorias son más relevantes para su trabajo?",
+          "etiqueta_en": "Which regulatory frameworks or authorities are most relevant to your work?",
+          "opciones": [
+            {"valor": "cecmed", "es": "CECMED (Cuba)", "en": "CECMED (Cuba)"},
+            {"valor": "fda", "es": "FDA (Estados Unidos)", "en": "FDA (United States)"},
+            {"valor": "ema", "es": "EMA (Unión Europea)", "en": "EMA (European Union)"},
+            {"valor": "oms_ops", "es": "OMS/OPS — precalificación y estándares internacionales", "en": "WHO/PAHO — prequalification and international standards"},
+            {"valor": "ich", "es": "ICH (armonización técnica internacional)", "en": "ICH (international technical harmonisation)"},
+            {"valor": "iso", "es": "Normas ISO (13485, 14971 y similares)", "en": "ISO standards (13485, 14971 and similar)"},
+            {"valor": "ia_regulacion", "es": "Marco regulatorio de la IA (Ley de IA de la UE y equivalentes)", "en": "AI regulatory framework (EU AI Act and equivalents)"},
+            {"valor": "otras_agencias", "es": "Otras agencias nacionales (ANVISA, COFEPRIS, etc.)", "en": "Other national agencies (ANVISA, COFEPRIS, etc.)"}
+          ]
+        },
+        {
+          "id": "alcance_geografico",
+          "tipo": "unica",
+          "requerido": false,
+          "etiqueta_es": "¿Qué alcance geográfico debería cubrir el experto?",
+          "etiqueta_en": "What geographic scope should the expert cover?",
+          "opciones": [
+            {"valor": "solo_cuba", "es": "Solo Cuba", "en": "Cuba only"},
+            {"valor": "cuba_region", "es": "Cuba + región (América Latina y el Caribe)", "en": "Cuba + region (Latin America and the Caribbean)"},
+            {"valor": "cuba_internacional", "es": "Cuba + principales agencias internacionales (FDA, EMA, OMS…)", "en": "Cuba + major international agencies (FDA, EMA, WHO…)"},
+            {"valor": "global", "es": "Cobertura global, sin restricción", "en": "Global coverage, unrestricted"}
+          ]
+        },
+        {
+          "id": "notas_alcance",
+          "tipo": "parrafo",
+          "requerido": false,
+          "etiqueta_es": "Notas u observaciones sobre el alcance",
+          "etiqueta_en": "Notes or observations about scope"
+        }
+      ]
+    },
+    {
+      "id": "capacidades",
+      "icono": "✨",
+      "titulo_es": "Qué debería poder hacer por usted",
+      "titulo_en": "What it should be able to do for you",
+      "descripcion_es": "Esta es la sección más importante del formulario. Marque todo lo que le resulte útil, aunque le parezca ambicioso: no hay límite técnico que deba autoimponerse.",
+      "descripcion_en": "This is the most important section of the form. Mark everything you find useful, even if it seems ambitious: there is no technical limit you should impose on yourself.",
+      "campos": [
+        {
+          "id": "funciones_principales",
+          "tipo": "multiple",
+          "requerido": false,
+          "permite_otro": true,
+          "etiqueta_es": "¿Qué funciones le gustaría que tuviera este experto virtual?",
+          "etiqueta_en": "Which functions would you like this virtual expert to have?",
+          "opciones": [
+            {"valor": "consulta_experta", "es": "Responder preguntas puntuales como lo haría un colega experto, citando siempre la norma o fuente exacta", "en": "Answer specific questions like an expert colleague would, always citing the exact regulation or source",
+              "ayuda_es": "Similar a preguntarle a un especialista y recibir una respuesta clara con referencia a la norma aplicable.",
+              "ayuda_en": "Similar to asking a specialist and getting a clear answer with a reference to the applicable regulation."},
+            {"valor": "vigilancia_normativa", "es": "Vigilar y avisar de forma proactiva cuando cambie una normativa relevante", "en": "Proactively monitor and alert when a relevant regulation changes",
+              "ayuda_es": "Por ejemplo, avisarle apenas la FDA, la EMA o CECMED publiquen una actualización que le afecte.",
+              "ayuda_en": "For example, notify you as soon as the FDA, EMA or CECMED publish an update that affects you."},
+            {"valor": "redaccion_documentos", "es": "Ayudar a redactar y revisar documentos regulatorios (expedientes, protocolos, procedimientos)", "en": "Help draft and review regulatory documents (dossiers, protocols, procedures)",
+              "ayuda_es": "Por ejemplo, un borrador de un expediente técnico, un procedimiento normalizado o un informe.",
+              "ayuda_en": "For example, a draft of a technical dossier, a standard operating procedure or a report."},
+            {"valor": "analisis_brechas", "es": "Detectar diferencias o vacíos entre lo que hacemos y lo que exige una normativa concreta", "en": "Detect gaps between what we do and what a specific regulation requires",
+              "ayuda_es": "Conocido como «análisis de brechas»: comparar una práctica actual contra una exigencia normativa.",
+              "ayuda_en": "Known as a 'gap analysis': comparing a current practice against a regulatory requirement."},
+            {"valor": "comparar_agencias", "es": "Comparar las exigencias de distintas agencias regulatorias para un mismo producto o trámite", "en": "Compare requirements from different regulatory agencies for the same product or process",
+              "ayuda_es": "Por ejemplo, qué pide CECMED frente a lo que pide la EMA para el mismo tipo de producto.",
+              "ayuda_en": "For example, what CECMED requires versus what the EMA requires for the same type of product."},
+            {"valor": "simular_auditoria", "es": "Simular una inspección o auditoría regulatoria y señalar puntos débiles", "en": "Simulate a regulatory inspection or audit and point out weaknesses",
+              "ayuda_es": "Una especie de «ensayo» antes de una inspección real, señalando lo que probablemente sería observado.",
+              "ayuda_en": "A kind of 'rehearsal' before a real inspection, flagging what would likely be observed."},
+            {"valor": "capacitacion", "es": "Servir de tutor o capacitador para personal nuevo o en formación", "en": "Act as a tutor or trainer for new or trainee staff",
+              "ayuda_es": "Explicar conceptos regulatorios paso a paso a alguien que se está formando en el tema.",
+              "ayuda_en": "Explain regulatory concepts step by step to someone who is learning the subject."},
+            {"valor": "clasificacion_riesgo", "es": "Ayudar a clasificar el riesgo regulatorio de un producto, proceso o sistema", "en": "Help classify the regulatory risk of a product, process or system",
+              "ayuda_es": "Por ejemplo, determinar si un producto o un sistema de IA cae en una categoría de alto riesgo.",
+              "ayuda_en": "For example, determine whether a product or AI system falls into a high-risk category."},
+            {"valor": "farmacovigilancia_seguimiento", "es": "Dar seguimiento a temas de farmacovigilancia y seguridad post-comercialización", "en": "Track pharmacovigilance and post-marketing safety issues",
+              "ayuda_es": "Ayuda a monitorear señales de seguridad y obligaciones de reporte una vez el producto está en uso.",
+              "ayuda_en": "Helps monitor safety signals and reporting obligations once the product is in use."},
+            {"valor": "traduccion_simplificacion", "es": "Traducir o explicar en lenguaje sencillo normativas complejas o en otro idioma", "en": "Translate or explain in plain language complex regulations or those in another language",
+              "ayuda_es": "Convertir un texto normativo denso (o en inglés) en una explicación clara en español.",
+              "ayuda_en": "Turn a dense regulatory text (or one in another language) into a clear explanation."},
+            {"valor": "evaluar_ia_propia", "es": "Evaluar si un sistema de IA que usamos internamente cumple con la regulación de IA aplicable", "en": "Assess whether an AI system we use internally complies with applicable AI regulation",
+              "ayuda_es": "Revisar nuestras propias herramientas de IA frente a normas como la Ley de IA de la UE.",
+              "ayuda_en": "Review our own AI tools against rules such as the EU AI Act."},
+            {"valor": "informes_personalizados", "es": "Generar informes personalizados y listos para presentar sobre un tema regulatorio", "en": "Generate personalized, presentation-ready reports on a regulatory topic",
+              "ayuda_es": "Un documento descargable, ordenado y listo para compartir con dirección o con un tercero.",
+              "ayuda_en": "A downloadable, organized document ready to share with management or a third party."},
+            {"valor": "rastreo_bibliografico", "es": "Rastrear literatura científica y regulatoria relacionada con un producto o tecnología", "en": "Track scientific and regulatory literature related to a product or technology",
+              "ayuda_es": "Buscar y resumir artículos, guías o publicaciones relevantes y recientes.",
+              "ayuda_en": "Search for and summarize relevant, recent articles, guidelines or publications."},
+            {"valor": "checklist_tramites", "es": "Elaborar listas de verificación (checklists) para trámites o presentaciones regulatorias", "en": "Build checklists for regulatory procedures or submissions",
+              "ayuda_es": "Una lista paso a paso de lo que hace falta reunir antes de un trámite.",
+              "ayuda_en": "A step-by-step list of what needs to be gathered before a submission."}
+          ]
+        },
+        {
+          "id": "prioridad_top3",
+          "tipo": "parrafo",
+          "requerido": false,
+          "etiqueta_es": "De todas las funciones anteriores, ¿cuáles 3 son las más urgentes para usted hoy?",
+          "etiqueta_en": "Of all the functions above, which 3 are the most urgent for you today?"
+        }
+      ]
+    },
+    {
+      "id": "fuentes",
+      "icono": "📚",
+      "titulo_es": "Fuentes de información que debe dominar",
+      "titulo_en": "Information sources it should master",
+      "descripcion_es": "Un experto solo es tan bueno como su información. Ayúdenos a identificar qué debe leer y cada cuánto debe actualizarse.",
+      "descripcion_en": "An expert is only as good as its information. Help us identify what it should read and how often it should be updated.",
+      "campos": [
+        {
+          "id": "fuentes_prioritarias",
+          "tipo": "multiple",
+          "requerido": false,
+          "permite_otro": true,
+          "etiqueta_es": "¿Qué fuentes de información considera imprescindibles?",
+          "etiqueta_en": "Which information sources do you consider essential?",
+          "opciones": [
+            {"valor": "cecmed_normas", "es": "Normativas y guías de CECMED", "en": "CECMED regulations and guidelines"},
+            {"valor": "documentos_internos", "es": "Documentos y procedimientos internos del Instituto Finlay", "en": "Instituto Finlay's internal documents and procedures"},
+            {"valor": "ich_guias", "es": "Guías ICH", "en": "ICH guidelines"},
+            {"valor": "fda_guias", "es": "Guías y bases de datos de la FDA", "en": "FDA guidelines and databases"},
+            {"valor": "ema_guias", "es": "Guías y bases de datos de la EMA", "en": "EMA guidelines and databases"},
+            {"valor": "oms_publicaciones", "es": "Publicaciones y estándares de la OMS/OPS", "en": "WHO/PAHO publications and standards"},
+            {"valor": "gaceta_oficial", "es": "Legislación cubana general (Gaceta Oficial y similares)", "en": "General Cuban legislation (Official Gazette and similar)"},
+            {"valor": "literatura_cientifica", "es": "Literatura científica (PubMed y otras bases de datos)", "en": "Scientific literature (PubMed and other databases)"},
+            {"valor": "normas_iso", "es": "Normas ISO", "en": "ISO standards"},
+            {"valor": "ia_regulacion_internacional", "es": "Marco regulatorio internacional de la inteligencia artificial", "en": "International AI regulatory framework"}
+          ]
+        },
+        {
+          "id": "idiomas_fuentes",
+          "tipo": "multiple",
+          "requerido": false,
+          "permite_otro": true,
+          "etiqueta_es": "¿En qué idiomas debería poder leer e interpretar fuentes?",
+          "etiqueta_en": "In which languages should it be able to read and interpret sources?",
+          "opciones": [
+            {"valor": "espanol", "es": "Español", "en": "Spanish"},
+            {"valor": "ingles", "es": "Inglés", "en": "English"},
+            {"valor": "portugues", "es": "Portugués", "en": "Portuguese"},
+            {"valor": "frances", "es": "Francés", "en": "French"}
+          ]
+        },
+        {
+          "id": "frecuencia_actualizacion",
+          "tipo": "unica",
+          "requerido": false,
+          "etiqueta_es": "¿Con qué frecuencia debería actualizarse su conocimiento normativo?",
+          "etiqueta_en": "How often should its regulatory knowledge be updated?",
+          "opciones": [
+            {"valor": "tiempo_real", "es": "En tiempo real o a diario", "en": "In real time or daily"},
+            {"valor": "semanal", "es": "Semanalmente", "en": "Weekly"},
+            {"valor": "mensual", "es": "Mensualmente", "en": "Monthly"},
+            {"valor": "bajo_demanda", "es": "Solo cuando yo se lo pida", "en": "Only when I ask it to"}
+          ]
+        },
+        {
+          "id": "notas_fuentes",
+          "tipo": "parrafo",
+          "requerido": false,
+          "etiqueta_es": "Notas u observaciones sobre las fuentes de información",
+          "etiqueta_en": "Notes or observations about information sources"
+        }
+      ]
+    },
+    {
+      "id": "interaccion",
+      "icono": "💬",
+      "titulo_es": "Cómo prefiere interactuar con él",
+      "titulo_en": "How you prefer to interact with it",
+      "descripcion_es": "Cuéntenos cómo imagina el día a día de usar esta herramienta.",
+      "descripcion_en": "Tell us how you imagine using this tool day to day.",
+      "campos": [
+        {
+          "id": "modo_interaccion",
+          "tipo": "multiple",
+          "requerido": false,
+          "permite_otro": true,
+          "etiqueta_es": "¿Cómo le gustaría comunicarse con el experto virtual?",
+          "etiqueta_en": "How would you like to communicate with the virtual expert?",
+          "opciones": [
+            {"valor": "conversacion", "es": "Conversación en lenguaje natural, como un chat", "en": "Natural language conversation, like a chat"},
+            {"valor": "formularios", "es": "Formularios estructurados para pedir información concreta", "en": "Structured forms to request specific information"},
+            {"valor": "informes_descargables", "es": "Informes o documentos descargables (PDF, Word)", "en": "Downloadable reports or documents (PDF, Word)"},
+            {"valor": "notificaciones", "es": "Notificaciones o alertas automáticas (correo, mensajería)", "en": "Automatic notifications or alerts (email, messaging)"},
+            {"valor": "panel_visual", "es": "Panel o tablero visual con el estado regulatorio de un vistazo", "en": "Visual dashboard with the regulatory status at a glance"},
+            {"valor": "integracion_herramientas", "es": "Integración con herramientas que ya uso (correo, Word, etc.)", "en": "Integration with tools I already use (email, Word, etc.)"}
+          ]
+        },
+        {
+          "id": "dispositivo_uso",
+          "tipo": "multiple",
+          "requerido": false,
+          "etiqueta_es": "¿Desde qué dispositivos lo usaría habitualmente?",
+          "etiqueta_en": "Which devices would you typically use it from?",
+          "opciones": [
+            {"valor": "computadora", "es": "Computadora de escritorio o laptop", "en": "Desktop or laptop computer"},
+            {"valor": "telefono", "es": "Teléfono móvil", "en": "Mobile phone"},
+            {"valor": "tableta", "es": "Tableta", "en": "Tablet"}
+          ]
+        },
+        {
+          "id": "disponibilidad_offline",
+          "tipo": "unica",
+          "requerido": false,
+          "etiqueta_es": "¿Necesita que funcione sin conexión a internet?",
+          "etiqueta_en": "Do you need it to work without an internet connection?",
+          "opciones": [
+            {"valor": "necesita_offline", "es": "Sí, necesito que funcione sin conexión a internet", "en": "Yes, I need it to work without an internet connection"},
+            {"valor": "prefiere_online", "es": "Prefiero que tenga acceso a internet para estar siempre actualizado", "en": "I prefer it to have internet access to always stay up to date"},
+            {"valor": "ambas", "es": "Ambas opciones serían ideales", "en": "Both options would be ideal"},
+            {"valor": "no_seguro", "es": "No estoy seguro/a", "en": "I'm not sure"}
+          ]
+        },
+        {
+          "id": "notas_interaccion",
+          "tipo": "parrafo",
+          "requerido": false,
+          "etiqueta_es": "Notas u observaciones sobre la forma de interactuar",
+          "etiqueta_en": "Notes or observations about the interaction style"
+        }
+      ]
+    },
+    {
+      "id": "estilo",
+      "icono": "🎓",
+      "titulo_es": "Estilo y personalidad del experto virtual",
+      "titulo_en": "Style and personality of the virtual expert",
+      "descripcion_es": "Aunque sea una herramienta de IA, su forma de comunicarse importa tanto como lo que sabe.",
+      "descripcion_en": "Even though it is an AI tool, how it communicates matters as much as what it knows.",
+      "campos": [
+        {
+          "id": "tono",
+          "tipo": "unica",
+          "requerido": false,
+          "etiqueta_es": "¿Qué tono debería usar habitualmente?",
+          "etiqueta_en": "What tone should it typically use?",
+          "opciones": [
+            {"valor": "formal", "es": "Formal y técnico", "en": "Formal and technical"},
+            {"valor": "cercano", "es": "Cercano y didáctico, como un mentor", "en": "Approachable and didactic, like a mentor"},
+            {"valor": "depende", "es": "Depende del tema o de quién pregunta", "en": "Depends on the topic or who is asking"}
+          ]
+        },
+        {
+          "id": "nivel_detalle_defecto",
+          "tipo": "unica",
+          "requerido": false,
+          "etiqueta_es": "Por defecto, ¿cómo prefiere que sean las respuestas?",
+          "etiqueta_en": "By default, how do you prefer the answers to be?",
+          "opciones": [
+            {"valor": "breves", "es": "Breves y directas", "en": "Brief and direct"},
+            {"valor": "completas", "es": "Completas, con contexto y justificación", "en": "Complete, with context and justification"},
+            {"valor": "preguntar", "es": "Que primero pregunte cuánto detalle deseo", "en": "That it first asks how much detail I want"}
+          ]
+        },
+        {
+          "id": "citar_fuentes_siempre",
+          "tipo": "unica",
+          "requerido": false,
+          "etiqueta_es": "¿Debería indicar siempre de dónde saca la información?",
+          "etiqueta_en": "Should it always state where the information comes from?",
+          "opciones": [
+            {"valor": "siempre", "es": "Sí, siempre debe indicar la fuente exacta", "en": "Yes, it must always state the exact source"},
+            {"valor": "cuando_pida", "es": "Solo cuando yo lo pida", "en": "Only when I ask for it"},
+            {"valor": "no_imprescindible", "es": "No es imprescindible", "en": "Not essential"}
+          ]
+        },
+        {
+          "id": "reconocer_incertidumbre",
+          "tipo": "unica",
+          "requerido": false,
+          "etiqueta_es": "¿Qué debe hacer cuando no está seguro o la norma es ambigua?",
+          "etiqueta_en": "What should it do when it is unsure or the regulation is ambiguous?",
+          "opciones": [
+            {"valor": "decir_incertidumbre", "es": "Debe decir claramente que no está seguro o que la norma es ambigua", "en": "It must clearly state that it is unsure or that the regulation is ambiguous"},
+            {"valor": "siempre_responder", "es": "Debe dar siempre una respuesta, aunque no esté 100% seguro", "en": "It should always give an answer, even if not 100% sure"},
+            {"valor": "depende_caso", "es": "Depende del caso", "en": "Depends on the case"}
+          ]
+        },
+        {
+          "id": "notas_estilo",
+          "tipo": "parrafo",
+          "requerido": false,
+          "etiqueta_es": "Notas u observaciones sobre el estilo",
+          "etiqueta_en": "Notes or observations about style"
+        }
+      ]
+    },
+    {
+      "id": "confianza",
+      "icono": "🛡️",
+      "titulo_es": "Confianza, validación y límites",
+      "titulo_en": "Trust, validation and limits",
+      "descripcion_es": "En un tema tan sensible, la confiabilidad es tan importante como las capacidades.",
+      "descripcion_en": "In such a sensitive subject, reliability matters as much as capability.",
+      "campos": [
+        {
+          "id": "criticidad_error",
+          "tipo": "escala",
+          "requerido": false,
+          "escala_min": 1,
+          "escala_max": 5,
+          "etiqueta_es": "¿Qué tan grave sería que diera una respuesta incorrecta sin advertirlo?",
+          "etiqueta_en": "How serious would it be if it gave an incorrect answer without warning?",
+          "etiqueta_min_es": "Poco grave",
+          "etiqueta_min_en": "Not serious",
+          "etiqueta_max_es": "Inaceptable",
+          "etiqueta_max_en": "Unacceptable"
+        },
+        {
+          "id": "mecanismos_verificacion",
+          "tipo": "multiple",
+          "requerido": false,
+          "permite_otro": true,
+          "etiqueta_es": "¿Qué mecanismos de verificación le darían confianza?",
+          "etiqueta_en": "Which verification mechanisms would give you confidence?",
+          "opciones": [
+            {"valor": "enlaces_fuente", "es": "Enlaces directos a la fuente normativa original", "en": "Direct links to the original regulatory source"},
+            {"valor": "nivel_confianza", "es": "Un nivel de confianza declarado en cada respuesta", "en": "A stated confidence level for each answer"},
+            {"valor": "fecha_actualizacion", "es": "Fecha de la última actualización de la información usada", "en": "Date of the last update of the information used"},
+            {"valor": "revision_humana", "es": "Posibilidad de que una persona revise antes de usarlo oficialmente", "en": "The ability for a person to review it before official use"},
+            {"valor": "registro_auditoria", "es": "Registro de todas las consultas para poder auditarlas después", "en": "A log of all queries so they can be audited later"}
+          ]
+        },
+        {
+          "id": "uso_previsto",
+          "tipo": "unica",
+          "requerido": false,
+          "etiqueta_es": "¿Cómo se usarían sus respuestas en la práctica?",
+          "etiqueta_en": "How would its answers be used in practice?",
+          "opciones": [
+            {"valor": "borrador_revisado", "es": "Como apoyo o borrador que siempre revisa una persona antes de usarse", "en": "As support or a draft that a person always reviews before use"},
+            {"valor": "fuente_autorizada", "es": "Como fuente autorizada para decisiones internas", "en": "As an authoritative source for internal decisions"},
+            {"valor": "ambos_segun_caso", "es": "Ambas, según el tipo de consulta", "en": "Both, depending on the type of query"}
+          ]
+        },
+        {
+          "id": "datos_confidenciales",
+          "tipo": "unica",
+          "requerido": false,
+          "etiqueta_es": "¿Qué tan estrictos deben ser con la información confidencial del instituto?",
+          "etiqueta_en": "How strict should it be with the institute's confidential information?",
+          "opciones": [
+            {"valor": "nunca_salir", "es": "Nunca debe salir información confidencial fuera de nuestro control", "en": "Confidential information must never leave our control"},
+            {"valor": "servicios_seguros", "es": "Puede usar servicios externos si son seguros y confiables", "en": "It may use external services if they are secure and trustworthy"},
+            {"valor": "necesita_orientacion", "es": "No estoy seguro/a, prefiero que me orienten sobre las opciones", "en": "I'm not sure, I would like guidance on the options"}
+          ]
+        },
+        {
+          "id": "notas_confianza",
+          "tipo": "parrafo",
+          "requerido": false,
+          "etiqueta_es": "Notas u observaciones sobre confianza y validación",
+          "etiqueta_en": "Notes or observations about trust and validation"
+        }
+      ]
+    },
+    {
+      "id": "casos_uso",
+      "icono": "🗂️",
+      "titulo_es": "Casos de uso reales",
+      "titulo_en": "Real use cases",
+      "descripcion_es": "Los ejemplos concretos valen más que mil descripciones generales.",
+      "descripcion_en": "Concrete examples are worth more than a thousand general descriptions.",
+      "campos": [
+        {
+          "id": "ejemplos_preguntas",
+          "tipo": "parrafo",
+          "requerido": false,
+          "grande": true,
+          "etiqueta_es": "Escriba de 3 a 5 preguntas o tareas reales que le haría a este experto virtual hoy mismo si ya existiera",
+          "etiqueta_en": "Write 3 to 5 real questions or tasks you would ask this virtual expert today if it already existed"
+        },
+        {
+          "id": "situacion_frecuente",
+          "tipo": "parrafo",
+          "requerido": false,
+          "grande": true,
+          "etiqueta_es": "Describa una situación reciente en la que hubiera deseado tener a este experto disponible",
+          "etiqueta_en": "Describe a recent situation where you wished you had this expert available"
+        }
+      ]
+    },
+    {
+      "id": "prioridades",
+      "icono": "⚖️",
+      "titulo_es": "Prioridades y lo que no puede faltar",
+      "titulo_en": "Priorities and what can't be missing",
+      "descripcion_es": "Ayúdenos a distinguir entre lo imprescindible y lo deseable.",
+      "descripcion_en": "Help us distinguish between what is essential and what is desirable.",
+      "campos": [
+        {
+          "id": "imprescindible",
+          "tipo": "parrafo",
+          "requerido": false,
+          "etiqueta_es": "¿Qué es absolutamente imprescindible para que esta herramienta le sea útil?",
+          "etiqueta_en": "What is absolutely essential for this tool to be useful to you?"
+        },
+        {
+          "id": "deseable_no_esencial",
+          "tipo": "parrafo",
+          "requerido": false,
+          "etiqueta_es": "¿Qué sería un lujo agradable, pero no imprescindible?",
+          "etiqueta_en": "What would be a nice-to-have, but not essential?"
+        },
+        {
+          "id": "preocupaciones",
+          "tipo": "parrafo",
+          "requerido": false,
+          "etiqueta_es": "¿Qué le preocupa de una herramienta así? (errores, uso de sus datos, dependencia excesiva, etc.)",
+          "etiqueta_en": "What concerns you about such a tool? (errors, use of your data, excessive dependence, etc.)"
+        }
+      ]
+    },
+    {
+      "id": "aspiracion",
+      "icono": "🚀",
+      "titulo_es": "Su aspiración sin límites",
+      "titulo_en": "Your aspiration without limits",
+      "descripcion_es": "La última pregunta es la más importante de todas.",
+      "descripcion_en": "The last question is the most important of all.",
+      "campos": [
+        {
+          "id": "sin_limites",
+          "tipo": "parrafo",
+          "requerido": false,
+          "grande": true,
+          "destacado": true,
+          "etiqueta_es": "Si no existiera ninguna limitación técnica, ¿qué le pediría a este experto virtual? Sea tan ambicioso/a como quiera.",
+          "etiqueta_en": "If there were no technical limitation at all, what would you ask this virtual expert for? Be as ambitious as you like."
+        },
+        {
+          "id": "comentarios_finales",
+          "tipo": "parrafo",
+          "requerido": false,
+          "etiqueta_es": "Comentarios u observaciones finales",
+          "etiqueta_en": "Final comments or observations"
+        }
+      ]
+    }
+  ]
+}
