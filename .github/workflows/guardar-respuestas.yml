@@ -1,0 +1,120 @@
+name: Guardar respuesta del formulario
+
+# Cuando alguien completa el formulario de requisitos y lo envía, el sitio
+# abre un issue de GitHub ya redactado con la etiqueta "respuesta-formulario".
+# Este flujo de trabajo toma ese issue y lo convierte en un archivo
+# versionado dentro de /respuestas, para que las respuestas queden en el
+# historial de git y no solo en la lista de issues.
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: guardar-respuestas
+  cancel-in-progress: false
+
+jobs:
+  guardar:
+    if: contains(github.event.issue.labels.*.name, 'respuesta-formulario')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Evitar procesar el mismo issue dos veces
+        id: verificar
+        run: |
+          if git log --all --grep="issue #${{ github.event.issue.number }})" --fixed-strings | grep -q .; then
+            echo "ya_guardado=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ya_guardado=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Escribir archivo de respuesta
+        if: steps.verificar.outputs.ya_guardado == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            const issue = context.payload.issue;
+            const fecha = issue.created_at.slice(0, 10);
+            const slug = (issue.title || 'sin-titulo')
+              .toLowerCase()
+              .normalize('NFD').replace(/[̀-ͯ]/g, '')
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/^-+|-+$/g, '')
+              .slice(0, 60) || 'respuesta';
+
+            const base = `respuestas/${fecha}-issue-${issue.number}-${slug}`;
+            fs.mkdirSync('respuestas', { recursive: true });
+
+            const encabezado = [
+              `# ${issue.title}`,
+              '',
+              `- Emitido por: @${issue.user.login}`,
+              `- Fecha: ${issue.created_at}`,
+              `- Issue original: ${issue.html_url}`,
+              '',
+              '---',
+              '',
+            ].join('\n');
+
+            fs.writeFileSync(`${base}.md`, encabezado + (issue.body || '') + '\n');
+
+            const coincidencia = (issue.body || '').match(/```json\s*([\s\S]*?)```/);
+            if (coincidencia) {
+              try {
+                const datos = JSON.parse(coincidencia[1]);
+                fs.writeFileSync(`${base}.json`, JSON.stringify(datos, null, 2) + '\n');
+              } catch (err) {
+                core.warning(`No se pudo interpretar el bloque JSON del issue #${issue.number}: ${err.message}`);
+              }
+            }
+
+            core.setOutput('archivo_base', base);
+
+      - name: Confirmar y subir el archivo
+        if: steps.verificar.outputs.ya_guardado == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add respuestas/
+          if git diff --cached --quiet; then
+            echo "Sin cambios que registrar."
+          else
+            git commit -m "chore(respuestas): guardar respuesta del formulario (issue #${{ github.event.issue.number }})"
+            git push origin HEAD:main
+          fi
+
+      - name: Confirmar en el issue y cerrarlo
+        if: steps.verificar.outputs.ya_guardado == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: [
+                '¡Gracias! Sus respuestas se guardaron en el repositorio, dentro de la carpeta `/respuestas`, y quedarán disponibles para construir el experto regulatorio virtual.',
+                '',
+                'Thank you! Your answers were saved in the repository, inside the `/respuestas` folder, and will be available for building the virtual regulatory expert.',
+              ].join('\n'),
+            });
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: 'closed',
+              state_reason: 'completed',
+            });
