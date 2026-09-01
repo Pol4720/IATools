@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encuestas — Instituto Finlay de Vacunas</title>
+<meta name="description" content="Plataforma de encuestas del proyecto de Inteligencia Artificial del Instituto Finlay de Vacunas.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧬</text></svg>">
+<link rel="stylesheet" href="./motor/css/estilos.css">
+<style>
+  .listado { display: grid; gap: 1rem; margin-top: 1.5rem; }
+  .encuesta-tarjeta {
+    display: block;
+    background: var(--color-superficie);
+    border: 1.5px solid var(--color-borde);
+    border-radius: var(--radio);
+    padding: 1.25rem 1.4rem;
+    text-decoration: none;
+    color: var(--color-texto);
+    box-shadow: var(--sombra);
+  }
+  .encuesta-tarjeta:hover { border-color: var(--color-primario); }
+  .encuesta-tarjeta h2 { margin: 0.1rem 0 0.4rem; display: flex; align-items: center; gap: 0.5rem; }
+  .encuesta-tarjeta p { margin: 0; color: var(--color-texto-suave); }
+  .sin-encuestas { color: var(--color-texto-suave); font-style: italic; }
+</style>
+</head>
+<body>
+
+<header class="encabezado">
+  <div class="encabezado-fila">
+    <div class="encabezado-marca">
+      <span class="encabezado-icono" aria-hidden="true">🧬</span>
+      <div>
+        <p class="encabezado-institucion">Instituto Finlay de Vacunas — Proyecto de Inteligencia Artificial</p>
+        <h1 class="encabezado-titulo" id="titulo-pagina">Encuestas disponibles</h1>
+      </div>
+    </div>
+    <div class="encabezado-controles">
+      <button type="button" id="boton-idioma" class="boton-idioma" aria-label="Cambiar idioma / Switch language">
+        <span id="boton-idioma-texto">EN</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="contenedor">
+  <section class="tarjeta intro">
+    <p id="texto-intro">Seleccione la encuesta que desea completar.</p>
+    <div class="listado" id="listado-encuestas"></div>
+  </section>
+</main>
+
+<footer class="pie">
+  <p id="texto-pie">Instituto Finlay de Vacunas — Plataforma de encuestas del proyecto de Inteligencia Artificial.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  const CLAVE_IDIOMA = "iatools-encuestas:idioma-general";
+  let idioma = localStorage.getItem(CLAVE_IDIOMA) || "es";
+
+  const TEXTOS = {
+    es: {
+      titulo: "Encuestas disponibles",
+      intro: "Seleccione la encuesta que desea completar.",
+      pie: "Instituto Finlay de Vacunas — Plataforma de encuestas del proyecto de Inteligencia Artificial.",
+      sinEncuestas: "Todavía no hay encuestas activas.",
+      abrir: "Responder →",
+    },
+    en: {
+      titulo: "Available surveys",
+      intro: "Select the survey you want to fill out.",
+      pie: "Instituto Finlay de Vacunas — Survey platform for the Artificial Intelligence project.",
+      sinEncuestas: "There are no active surveys yet.",
+      abrir: "Answer →",
+    },
+  };
+
+  function render(registro) {
+    document.documentElement.lang = idioma;
+    document.getElementById("titulo-pagina").textContent = TEXTOS[idioma].titulo;
+    document.getElementById("texto-intro").textContent = TEXTOS[idioma].intro;
+    document.getElementById("texto-pie").textContent = TEXTOS[idioma].pie;
+    document.getElementById("boton-idioma-texto").textContent = idioma === "es" ? "EN" : "ES";
+
+    const contenedor = document.getElementById("listado-encuestas");
+    contenedor.innerHTML = "";
+    const activas = (registro.encuestas || []).filter((e) => e.activa);
+    if (activas.length === 0) {
+      const p = document.createElement("p");
+      p.className = "sin-encuestas";
+      p.textContent = TEXTOS[idioma].sinEncuestas;
+      contenedor.appendChild(p);
+      return;
+    }
+    activas.forEach((encuesta) => {
+      const a = document.createElement("a");
+      a.className = "encuesta-tarjeta";
+      a.href = `./encuestas/${encuesta.slug}/`;
+      a.innerHTML = `
+        <h2><span aria-hidden="true">${encuesta.icono || "📋"}</span> ${encuesta[`titulo_${idioma}`] || encuesta.titulo_es}</h2>
+        <p>${encuesta[`descripcion_${idioma}`] || encuesta.descripcion_es}</p>
+        <p style="margin-top:0.6rem;font-weight:600;color:var(--color-primario-oscuro)">${TEXTOS[idioma].abrir}</p>
+      `;
+      contenedor.appendChild(a);
+    });
+  }
+
+  fetch("./registro.json", { cache: "no-store" })
+    .then((r) => r.json())
+    .then((registro) => {
+      render(registro);
+      document.getElementById("boton-idioma").addEventListener("click", () => {
+        idioma = idioma === "es" ? "en" : "es";
+        localStorage.setItem(CLAVE_IDIOMA, idioma);
+        render(registro);
+      });
+    })
+    .catch((err) => {
+      document.getElementById("listado-encuestas").textContent = "Error al cargar el listado de encuestas.";
+      console.error(err);
+    });
+})();
+</script>
+</body>
+</html>
