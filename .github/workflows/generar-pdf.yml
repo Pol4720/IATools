@@ -1,0 +1,61 @@
+name: Regenerar PDF de encuestas
+
+# Cada encuesta expone su versión en PDF editable (es/en) generada desde
+# el mismo preguntas.json que usa la versión web, para que nunca se
+# desincronicen. Este flujo de trabajo detecta cambios en cualquier
+# preguntas.json (por ejemplo, al crear o editar una encuesta desde el
+# panel de administración o pidiéndolo por chat) y regenera sus PDF
+# automáticamente.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "sitio/encuestas/*/preguntas.json"
+      - "sitio/motor/generar_pdf.py"
+      - ".github/workflows/generar-pdf.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generar-pdf
+  cancel-in-progress: false
+
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: pip install reportlab
+
+      - name: Regenerar el PDF de cada encuesta
+        run: |
+          set -e
+          for carpeta in sitio/encuestas/*/; do
+            if [ -f "${carpeta}preguntas.json" ]; then
+              echo "→ ${carpeta}"
+              python3 sitio/motor/generar_pdf.py "$carpeta"
+            fi
+          done
+
+      - name: Confirmar y subir los PDF si cambiaron
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sitio/encuestas/*/pdf/*.pdf
+          if git diff --cached --quiet; then
+            echo "Sin cambios en los PDF."
+          else
+            git commit -m "chore(pdf): regenerar PDF editable de encuestas"
+            git push origin HEAD:main
+          fi

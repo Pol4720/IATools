@@ -1,10 +1,10 @@
-name: Publicar formulario en GitHub Pages
+name: Publicar plataforma de encuestas en GitHub Pages
 
 on:
   push:
     branches: [main]
     paths:
-      - "formulario-requisitos/**"
+      - "sitio/**"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch: {}
 
@@ -27,10 +27,10 @@ jobs:
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Empaquetar el sitio del formulario
+      - name: Empaquetar el sitio
         uses: actions/upload-pages-artifact@v3
         with:
-          path: formulario-requisitos
+          path: sitio
 
   publicar:
     needs: construir

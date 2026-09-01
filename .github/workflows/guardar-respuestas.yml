@@ -1,10 +1,12 @@
-name: Guardar respuesta del formulario
+name: Guardar respuesta de encuesta
 
-# Cuando alguien completa el formulario de requisitos y lo envía, el sitio
-# abre un issue de GitHub ya redactado con la etiqueta "respuesta-formulario".
-# Este flujo de trabajo toma ese issue y lo convierte en un archivo
-# versionado dentro de /respuestas, para que las respuestas queden en el
-# historial de git y no solo en la lista de issues.
+# Cuando alguien completa una encuesta y la envía por la vía de GitHub, el
+# sitio abre un issue ya redactado con la etiqueta "respuesta:<slug>" (o,
+# si se creó a mano con la plantilla de GitHub, la etiqueta "respuesta" y
+# el slug dentro del cuerpo). Este flujo de trabajo toma ese issue y lo
+# convierte en un archivo versionado dentro de /respuestas/<slug>, para que
+# las respuestas queden en el historial de git y no solo en la lista de
+# issues.
 
 on:
   issues:
@@ -20,7 +22,9 @@ concurrency:
 
 jobs:
   guardar:
-    if: contains(github.event.issue.labels.*.name, 'respuesta-formulario')
+    if: >-
+      contains(github.event.issue.labels.*.name, 'respuesta') ||
+      contains(join(github.event.issue.labels.*.name, ','), 'respuesta:')
     runs-on: ubuntu-latest
     steps:
       - name: Descargar repositorio
@@ -40,27 +44,47 @@ jobs:
 
       - name: Escribir archivo de respuesta
         if: steps.verificar.outputs.ya_guardado == 'false'
+        id: escribir
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            const path = require('path');
 
             const issue = context.payload.issue;
-            const fecha = issue.created_at.slice(0, 10);
-            const slug = (issue.title || 'sin-titulo')
+            const cuerpo = issue.body || '';
+
+            const aSlug = (texto) => (texto || '')
               .toLowerCase()
               .normalize('NFD').replace(/[̀-ͯ]/g, '')
               .replace(/[^a-z0-9]+/g, '-')
               .replace(/^-+|-+$/g, '')
-              .slice(0, 60) || 'respuesta';
+              .slice(0, 60);
 
-            const base = `respuestas/${fecha}-issue-${issue.number}-${slug}`;
-            fs.mkdirSync('respuestas', { recursive: true });
+            // 1) etiqueta "respuesta:<slug>" (vía del formulario en línea)
+            const etiquetaConSlug = (issue.labels || [])
+              .map((l) => (typeof l === 'string' ? l : l.name))
+              .find((nombre) => nombre && nombre.startsWith('respuesta:'));
+            let slugEncuesta = etiquetaConSlug ? etiquetaConSlug.slice('respuesta:'.length) : '';
+
+            // 2) si no, buscar el campo "¿A qué encuesta corresponde?" de la
+            //    plantilla de issue manual (formato de GitHub issue forms).
+            if (!slugEncuesta) {
+              const coincidenciaSlug = cuerpo.match(/###\s*.*encuesta.*\n+\s*([a-zA-Z0-9-]+)/i);
+              if (coincidenciaSlug) slugEncuesta = aSlug(coincidenciaSlug[1]);
+            }
+
+            if (!slugEncuesta) slugEncuesta = 'sin-clasificar';
+
+            const fecha = issue.created_at.slice(0, 10);
+            const tituloSlug = aSlug(issue.title) || 'respuesta';
+            const carpeta = `respuestas/${slugEncuesta}`;
+            const base = `${carpeta}/${fecha}-issue-${issue.number}-${tituloSlug}`;
+            fs.mkdirSync(carpeta, { recursive: true });
 
             const encabezado = [
               `# ${issue.title}`,
               '',
+              `- Encuesta: ${slugEncuesta}`,
               `- Emitido por: @${issue.user.login}`,
               `- Fecha: ${issue.created_at}`,
               `- Issue original: ${issue.html_url}`,
@@ -69,12 +93,12 @@ jobs:
               '',
             ].join('\n');
 
-            fs.writeFileSync(`${base}.md`, encabezado + (issue.body || '') + '\n');
+            fs.writeFileSync(`${base}.md`, encabezado + cuerpo + '\n');
 
-            const coincidencia = (issue.body || '').match(/```json\s*([\s\S]*?)```/);
-            if (coincidencia) {
+            const coincidenciaJson = cuerpo.match(/```json\s*([\s\S]*?)```/);
+            if (coincidenciaJson) {
               try {
-                const datos = JSON.parse(coincidencia[1]);
+                const datos = JSON.parse(coincidenciaJson[1]);
                 fs.writeFileSync(`${base}.json`, JSON.stringify(datos, null, 2) + '\n');
               } catch (err) {
                 core.warning(`No se pudo interpretar el bloque JSON del issue #${issue.number}: ${err.message}`);
@@ -92,7 +116,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "Sin cambios que registrar."
           else
-            git commit -m "chore(respuestas): guardar respuesta del formulario (issue #${{ github.event.issue.number }})"
+            git commit -m "chore(respuestas): guardar respuesta de encuesta (issue #${{ github.event.issue.number }})"
             git push origin HEAD:main
           fi
 
@@ -106,9 +130,9 @@ jobs:
               repo: context.repo.repo,
               issue_number: context.issue.number,
               body: [
-                '¡Gracias! Sus respuestas se guardaron en el repositorio, dentro de la carpeta `/respuestas`, y quedarán disponibles para construir el experto regulatorio virtual.',
+                '¡Gracias! Sus respuestas se guardaron en el repositorio, dentro de la carpeta `/respuestas`, y quedarán disponibles para el equipo del proyecto.',
                 '',
-                'Thank you! Your answers were saved in the repository, inside the `/respuestas` folder, and will be available for building the virtual regulatory expert.',
+                'Thank you! Your answers were saved in the repository, inside the `/respuestas` folder, and will be available for the project team.',
               ].join('\n'),
             });
             await github.rest.issues.update({

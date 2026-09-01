@@ -4,6 +4,6 @@
 # esos parámetros, rompiendo el envío automático.
 blank_issues_enabled: true
 contact_links:
-  - name: "🧬 Formulario en línea de requisitos"
-    url: https://pol4720.github.io/IATools/formulario-requisitos/
+  - name: "🧬 Encuestas en línea"
+    url: https://pol4720.github.io/IATools/
     about: "Vía recomendada para responder: guarda su progreso automáticamente y organiza sus respuestas por usted."
