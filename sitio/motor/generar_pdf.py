@@ -1,28 +1,29 @@
 #!/usr/bin/env python3
-"""Genera la versión PDF editable (rellenable) del formulario de requisitos.
+"""Genera la versión PDF editable (rellenable) de una encuesta.
 
-Lee la misma fuente de datos que usa el formulario en línea
-(``formulario-requisitos/data/preguntas.json``) para que ambas versiones
-nunca se desincronicen, y produce un PDF con campos de formulario
+Es un generador compartido por todas las encuestas de la plataforma: lee
+``preguntas.json`` de la carpeta de la encuesta indicada (misma fuente de
+datos que usa la versión web, para que ambas nunca se desincronicen) y
+produce, dentro de su subcarpeta ``pdf/``, un PDF con campos de formulario
 reales (AcroForm): texto, párrafo, opción única, opción múltiple y escala.
 
 Uso:
-    python3 generar_formulario_pdf.py
+    python3 generar_pdf.py <ruta-a-la-carpeta-de-la-encuesta>
+    python3 generar_pdf.py sitio/encuestas/experto-regulatorio
 
 Requiere: reportlab (``pip install reportlab``).
 """
 from __future__ import annotations
 
+import argparse
 import json
-import textwrap
 from pathlib import Path
 
 from reportlab.lib.colors import HexColor
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 
-CARPETA_ACTUAL = Path(__file__).resolve().parent
-RUTA_DATOS = CARPETA_ACTUAL.parent / "data" / "preguntas.json"
+REPO_OWNER_PAGES = "pol4720.github.io/IATools"
 
 ANCHO_PAGINA, ALTO_PAGINA = A4
 MARGEN = 2.0 * 72 / 2.54  # 2 cm en puntos
@@ -34,52 +35,54 @@ COLOR_TEXTO = HexColor("#1f2933")
 COLOR_TEXTO_SUAVE = HexColor("#52606d")
 COLOR_BORDE = HexColor("#a9b7bb")
 
-TEXTOS_UI = {
-    "es": {
-        "instituto": "Instituto Finlay de Vacunas — Proyecto de Inteligencia Artificial",
-        "version_pdf": "Versión en PDF editable",
-        "instrucciones_titulo": "Cómo completar este formulario",
-        "instrucciones": [
-            "Puede rellenar este PDF directamente en su computadora con cualquier lector que admita formularios "
-            "(Adobe Acrobat Reader, Vista previa de macOS, Foxit, el propio navegador, etc.), o imprimirlo y "
-            "completarlo a mano.",
-            "Todas las preguntas son opcionales: responda con la profundidad que desee.",
-            "Si prefiere hacerlo en línea, con guardado automático y en su idioma preferido, use el formulario "
-            "web: https://pol4720.github.io/IATools/formulario-requisitos/",
-            "Al terminar, envíe este PDF (por correo o a la persona que se lo compartió) o transcriba sus "
-            "respuestas al formulario en línea.",
-        ],
-        "sin_limite": "Sea tan ambicioso/a como quiera: no hay límite técnico que deba autoimponerse.",
-        "otro": "Otro (especifique):",
-        "pagina": "Página",
-        "seccion": "Sección",
-    },
-    "en": {
-        "instituto": "Instituto Finlay de Vacunas — Artificial Intelligence Project",
-        "version_pdf": "Editable PDF version",
-        "instrucciones_titulo": "How to complete this form",
-        "instrucciones": [
-            "You can fill in this PDF directly on your computer with any reader that supports forms "
-            "(Adobe Acrobat Reader, macOS Preview, Foxit, your browser, etc.), or print it and fill it in by hand.",
-            "All questions are optional: answer in as much depth as you like.",
-            "If you prefer to answer online, with automatic saving and in your preferred language, use the web "
-            "form: https://pol4720.github.io/IATools/formulario-requisitos/",
-            "When you are done, send this PDF back (by email or to whoever shared it with you) or transcribe "
-            "your answers into the online form.",
-        ],
-        "sin_limite": "Be as ambitious as you like: there is no technical limit you should impose on yourself.",
-        "otro": "Other (please specify):",
-        "pagina": "Page",
-        "seccion": "Section",
-    },
-}
+def textos_ui(slug: str) -> dict:
+    url = f"https://{REPO_OWNER_PAGES}/{slug}/"
+    return {
+        "es": {
+            "instituto": "Instituto Finlay de Vacunas — Proyecto de Inteligencia Artificial",
+            "version_pdf": "Versión en PDF editable",
+            "instrucciones_titulo": "Cómo completar este formulario",
+            "instrucciones": [
+                "Puede rellenar este PDF directamente en su computadora con cualquier lector que admita formularios "
+                "(Adobe Acrobat Reader, Vista previa de macOS, Foxit, el propio navegador, etc.), o imprimirlo y "
+                "completarlo a mano.",
+                "Todas las preguntas son opcionales: responda con la profundidad que desee.",
+                "Si prefiere hacerlo en línea, con guardado automático y en su idioma preferido, use el formulario "
+                f"web: {url}",
+                "Al terminar, envíe este PDF (por correo o a la persona que se lo compartió) o transcriba sus "
+                "respuestas al formulario en línea.",
+            ],
+            "sin_limite": "Sea tan ambicioso/a como quiera: no hay límite técnico que deba autoimponerse.",
+            "otro": "Otro (especifique):",
+            "pagina": "Página",
+            "seccion": "Sección",
+        },
+        "en": {
+            "instituto": "Instituto Finlay de Vacunas — Artificial Intelligence Project",
+            "version_pdf": "Editable PDF version",
+            "instrucciones_titulo": "How to complete this form",
+            "instrucciones": [
+                "You can fill in this PDF directly on your computer with any reader that supports forms "
+                "(Adobe Acrobat Reader, macOS Preview, Foxit, your browser, etc.), or print it and fill it in by hand.",
+                "All questions are optional: answer in as much depth as you like.",
+                "If you prefer to answer online, with automatic saving and in your preferred language, use the web "
+                f"form: {url}",
+                "When you are done, send this PDF back (by email or to whoever shared it with you) or transcribe "
+                "your answers into the online form.",
+            ],
+            "sin_limite": "Be as ambitious as you like: there is no technical limit you should impose on yourself.",
+            "otro": "Other (please specify):",
+            "pagina": "Page",
+            "seccion": "Section",
+        },
+    }
 
 
 class GeneradorPdf:
-    def __init__(self, ruta_salida: Path, datos: dict, idioma: str):
+    def __init__(self, ruta_salida: Path, datos: dict, idioma: str, slug: str):
         self.datos = datos
         self.idioma = idioma
-        self.ui = TEXTOS_UI[idioma]
+        self.ui = textos_ui(slug)[idioma]
         self.c = canvas.Canvas(str(ruta_salida), pagesize=A4)
         self.c.setTitle(datos["meta"][f"titulo_{idioma}"])
         self.c.setAuthor("Instituto Finlay de Vacunas")
@@ -350,18 +353,32 @@ class GeneradorPdf:
         return self.total_campos_creados
 
 
-def generar_pdf(idioma: str, ruta_salida: Path) -> int:
-    datos = json.loads(RUTA_DATOS.read_text(encoding="utf-8"))
-    generador = GeneradorPdf(ruta_salida, datos, idioma)
+def generar_pdf(idioma: str, ruta_salida: Path, datos: dict, slug: str) -> int:
+    generador = GeneradorPdf(ruta_salida, datos, idioma, slug)
     return generador.generar()
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("carpeta_encuesta", help="Carpeta de la encuesta, con preguntas.json dentro (p. ej. sitio/encuestas/experto-regulatorio)")
+    args = parser.parse_args()
+
+    carpeta = Path(args.carpeta_encuesta).resolve()
+    ruta_datos = carpeta / "preguntas.json"
+    if not ruta_datos.exists():
+        raise SystemExit(f"No se encontró {ruta_datos}")
+
+    datos = json.loads(ruta_datos.read_text(encoding="utf-8"))
+    slug = datos.get("slug") or carpeta.name
+    carpeta_pdf = carpeta / "pdf"
+    carpeta_pdf.mkdir(exist_ok=True)
+
+    nombre_base = datos.get("pdf_nombre_base", slug)
     for idioma in ("es", "en"):
-        ruta_salida = CARPETA_ACTUAL / f"formulario-requisitos-ia-regulatoria-{idioma}.pdf"
-        total_campos = generar_pdf(idioma, ruta_salida)
+        ruta_salida = carpeta_pdf / f"{nombre_base}-{idioma}.pdf"
+        total_campos = generar_pdf(idioma, ruta_salida, datos, slug)
         tamano_kb = ruta_salida.stat().st_size / 1024
-        print(f"[{idioma}] {ruta_salida.name}: {total_campos} campos de formulario, {tamano_kb:.0f} KB")
+        print(f"[{idioma}] {ruta_salida.relative_to(carpeta.parent.parent.parent)}: {total_campos} campos de formulario, {tamano_kb:.0f} KB")
 
 
 if __name__ == "__main__":

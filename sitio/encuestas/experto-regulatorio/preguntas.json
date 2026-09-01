@@ -1,6 +1,9 @@
 {
   "version": "1.0.0",
+  "slug": "experto-regulatorio",
   "id_formulario": "requisitos-experto-regulatorio-ia",
+  "pdf_nombre_base": "formulario-requisitos-ia-regulatoria",
+  "correo_destino": "matosrichard58@gmail.com",
   "meta": {
     "titulo_es": "Formulario de requisitos: Experto Regulatorio Virtual",
     "titulo_en": "Requirements form: Virtual Regulatory Expert",
