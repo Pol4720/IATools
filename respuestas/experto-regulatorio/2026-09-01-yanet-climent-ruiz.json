@@ -1,0 +1,84 @@
+{
+  "idioma": "es",
+  "fuente": "PDF rellenado manualmente (formulario-requisitos-ia-regulatoria-es YANET.pdf)",
+  "respuestas": {
+    "nombre": "Yanet Climent Ruiz",
+    "rol_actual": "Investigador Titular",
+    "anos_experiencia": "15a30",
+    "productos_interes": [
+      "vacunas",
+      "ensayos_clinicos",
+      "bpm",
+      "farmacovigilancia",
+      "propiedad_intelectual"
+    ],
+    "marcos_regulatorios": [
+      "cecmed",
+      "fda",
+      "ema",
+      "oms_ops",
+      "ich",
+      "otras_agencias"
+    ],
+    "alcance_geografico": "global",
+    "funciones_principales": [
+      "consulta_experta",
+      "vigilancia_normativa",
+      "redaccion_documentos",
+      "analisis_brechas",
+      "comparar_agencias",
+      "simular_auditoria",
+      "capacitacion",
+      "clasificacion_riesgo",
+      "farmacovigilancia_seguimiento",
+      "traduccion_simplificacion",
+      "informes_personalizados",
+      "rastreo_bibliografico",
+      "checklist_tramites"
+    ],
+    "prioridad_top3": "9, 12, 13",
+    "fuentes_prioritarias": [
+      "cecmed_normas",
+      "documentos_internos",
+      "ich_guias",
+      "ema_guias",
+      "oms_publicaciones",
+      "literatura_cientifica"
+    ],
+    "idiomas_fuentes": [
+      "espanol",
+      "ingles",
+      "portugues",
+      "frances"
+    ],
+    "frecuencia_actualizacion": "mensual",
+    "modo_interaccion": [
+      "conversacion",
+      "informes_descargables",
+      "notificaciones",
+      "integracion_herramientas"
+    ],
+    "dispositivo_uso": [
+      "computadora",
+      "telefono"
+    ],
+    "disponibilidad_offline": "ambas",
+    "tono": "formal",
+    "nivel_detalle_defecto": "completas",
+    "citar_fuentes_siempre": "siempre",
+    "reconocer_incertidumbre": "decir_incertidumbre",
+    "criticidad_error": "5",
+    "mecanismos_verificacion": [
+      "enlaces_fuente",
+      "fecha_actualizacion",
+      "registro_auditoria"
+    ],
+    "uso_previsto": "borrador_revisado",
+    "datos_confidenciales": "nunca_salir",
+    "ejemplos_preguntas": "Revisión de expediente de registro sanitario de productos.\nRedacción de IPS.",
+    "situacion_frecuente": "Redacción de IPS",
+    "imprescindible": "Que aporte información real, actualizada y verificable.",
+    "preocupaciones": "Salida de información confidencial.",
+    "sin_limites": "Generar un informe de seguridad de un producto a partir de los datos de farmacovigilancia."
+  }
+}
