@@ -1,19 +1,28 @@
-name: "📋 Respuesta al formulario de requisitos (Experto Regulatorio Virtual)"
+name: "📋 Respuesta a una encuesta"
 description: "Vía alternativa para enviar sus respuestas si no pudo usar el formulario en línea. / Alternative way to submit your answers if you could not use the online form."
 title: "Respuesta: "
-labels: ["respuesta-formulario"]
+labels: ["respuesta"]
 body:
   - type: markdown
     attributes:
       value: |
         ## Antes de continuar / Before you continue
 
-        La forma recomendada de responder es el **formulario en línea**, que guarda su progreso automáticamente y organiza todo por usted:
-        👉 https://pol4720.github.io/IATools/formulario-requisitos/
+        La forma recomendada de responder es siempre el **formulario en línea** de la encuesta correspondiente, que guarda su progreso automáticamente y organiza todo por usted:
+        👉 https://pol4720.github.io/IATools/
 
         Use este formulario de GitHub **solo** si no pudo acceder al formulario en línea, o si ya descargó una copia de sus respuestas desde allí y solo necesita pegarla aquí.
 
-        *The recommended way to answer is the **online form**, which saves your progress automatically and organizes everything for you (link above). Use this GitHub form only if you could not access the online form, or if you already downloaded a copy of your answers from it and just need to paste it here.*
+        *The recommended way to answer is always the **online form** for the relevant survey, which saves your progress automatically and organizes everything for you (link above). Use this GitHub form only if you could not access the online form, or if you already downloaded a copy of your answers from it and just need to paste it here.*
+
+  - type: input
+    id: encuesta_slug
+    attributes:
+      label: "¿A qué encuesta corresponde? (identificador / slug) / Which survey is this for? (slug)"
+      description: "Es la parte final del enlace de la encuesta, por ejemplo «experto-regulatorio» en https://pol4720.github.io/IATools/encuestas/experto-regulatorio/"
+      placeholder: "experto-regulatorio"
+    validations:
+      required: true
 
   - type: input
     id: nombre
@@ -23,32 +32,11 @@ body:
     validations:
       required: false
 
-  - type: input
-    id: area
-    attributes:
-      label: "Área o especialidad / Area or specialty"
-      placeholder: "Ej.: Asuntos regulatorios, Control de la calidad, Investigación clínica…"
-    validations:
-      required: false
-
-  - type: dropdown
-    id: experiencia
-    attributes:
-      label: "Años de experiencia / Years of experience"
-      options:
-        - "Menos de 5 años / Less than 5 years"
-        - "Entre 5 y 15 años / Between 5 and 15 years"
-        - "Entre 15 y 30 años / Between 15 and 30 years"
-        - "Más de 30 años / More than 30 years"
-        - "Prefiero no decirlo / Prefer not to say"
-    validations:
-      required: false
-
   - type: textarea
     id: respuestas
     attributes:
       label: "Sus respuestas / Your answers"
-      description: "Pegue aquí el texto descargado del formulario en línea, o escriba directamente sus respuestas a las preguntas del formulario (alcance regulatorio, funciones deseadas, fuentes de información, estilo, confianza, casos de uso, prioridades y aspiraciones)."
+      description: "Pegue aquí el texto descargado del formulario en línea, o escriba directamente sus respuestas."
       placeholder: "Pegue o escriba aquí…"
       render: markdown
     validations:
