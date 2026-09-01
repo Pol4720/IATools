@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experto Regulatorio Virtual — Resultados del levantamiento de requisitos</title>
+<meta name="description" content="Resumen visual de las 6 respuestas recogidas para definir el Experto Regulatorio Virtual del Instituto Finlay de Vacunas.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧬</text></svg>">
+<style>
+:root {
+  --fondo: #0a1614;
+  --fondo-tarjeta: #10201d;
+  --borde: #1f3833;
+  --primario: #2dd4bf;
+  --primario-suave: rgba(45, 212, 191, 0.16);
+  --acento: #f2b134;
+  --acento-suave: rgba(242, 177, 52, 0.16);
+  --texto: #f2f7f5;
+  --texto-suave: #9db3ae;
+  --rojo: #ff6b6b;
+  --fuente: "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--fuente);
+  overflow: hidden;
+}
+
+.mazo {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.diapositiva {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5vh 7vw 12vh;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.diapositiva.activa { display: flex; opacity: 1; transform: translateY(0); }
+
+.diapositiva .marca {
+  position: absolute;
+  top: 2.2rem;
+  left: 2.4rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.kicker {
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primario);
+  font-weight: 700;
+  margin-bottom: 0.9rem;
+}
+h1.titulo-portada {
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  line-height: 1.05;
+  margin: 0 0 1rem;
+  font-weight: 800;
+}
+h2.titulo {
+  font-size: clamp(1.7rem, 4vw, 2.9rem);
+  line-height: 1.15;
+  margin: 0 0 1.6rem;
+  font-weight: 800;
+  max-width: 46rem;
+}
+.subtitulo {
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
+  color: var(--texto-suave);
+  max-width: 42rem;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.grid-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.4rem;
+  width: 100%;
+  max-width: 62rem;
+  margin-top: 1rem;
+}
+@media (max-width: 760px) { .grid-stats { grid-template-columns: 1fr; } }
+
+.tarjeta-stat {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  padding: 1.8rem 1.4rem;
+}
+.tarjeta-stat .numero {
+  font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+  font-weight: 800;
+  color: var(--primario);
+  line-height: 1;
+}
+.tarjeta-stat .numero.acento { color: var(--acento); }
+.tarjeta-stat .etiqueta {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  color: var(--texto-suave);
+  line-height: 1.4;
+}
+
+.lista-barras {
+  width: 100%;
+  max-width: 44rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  text-align: left;
+}
+.fila-barra { display: flex; flex-direction: column; gap: 0.35rem; }
+.fila-barra .etiqueta-fila {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+}
+.fila-barra .valor-fila { color: var(--primario); font-weight: 700; }
+.pista-barra {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.07);
+  overflow: hidden;
+}
+.relleno-barra {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primario), #7ef2e3);
+  width: 0%;
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.grid-perfiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.1rem;
+  width: 100%;
+  max-width: 60rem;
+}
+@media (max-width: 760px) { .grid-perfiles { grid-template-columns: repeat(2, 1fr); } }
+.tarjeta-perfil {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  padding: 1.2rem 1rem;
+}
+.tarjeta-perfil .avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--primario-suave);
+  color: var(--primario);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800;
+  margin: 0 auto 0.6rem;
+}
+.tarjeta-perfil .nombre { font-weight: 700; font-size: 0.95rem; }
+.tarjeta-perfil .area { font-size: 0.82rem; color: var(--texto-suave); margin-top: 0.15rem; }
+.tarjeta-perfil .badge {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: var(--acento-suave);
+  color: var(--acento);
+  font-weight: 700;
+}
+
+blockquote.cita {
+  max-width: 46rem;
+  font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+  line-height: 1.5;
+  font-style: italic;
+  color: var(--texto);
+  margin: 0 0 1.2rem;
+  position: relative;
+}
+.cita-autor { color: var(--primario); font-weight: 700; font-style: normal; }
+
+.chip-fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  max-width: 48rem;
+  margin-top: 1.2rem;
+}
+.chip {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.88rem;
+  color: var(--texto-suave);
+}
+.chip strong { color: var(--texto); }
+
+.pie-diapositiva {
+  position: absolute;
+  bottom: 6rem;
+  left: 0; right: 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+}
+
+/* ---------- Controles ---------- */
+
+.controles {
+  position: fixed;
+  bottom: 1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: rgba(16, 32, 29, 0.85);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--borde);
+  border-radius: 999px;
+  padding: 0.5rem 0.7rem;
+  z-index: 20;
+}
+.controles button {
+  width: 2.4rem; height: 2.4rem;
+  border-radius: 50%;
+  border: none;
+  background: var(--primario-suave);
+  color: var(--primario);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s ease;
+}
+.controles button:hover { background: var(--primario); color: #06201c; }
+.controles button:disabled { opacity: 0.35; cursor: not-allowed; }
+.contador { font-size: 0.85rem; color: var(--texto-suave); min-width: 3.4rem; text-align: center; }
+
+.boton-pantalla-completa {
+  position: fixed;
+  top: 1.6rem;
+  right: 1.8rem;
+  z-index: 20;
+  background: rgba(16, 32, 29, 0.85);
+  border: 1px solid var(--borde);
+  color: var(--texto-suave);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.boton-pantalla-completa:hover { color: var(--texto); border-color: var(--primario); }
+
+.barra-progreso-global {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primario), var(--acento));
+  z-index: 21;
+  transition: width 0.4s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .diapositiva, .relleno-barra, .barra-progreso-global { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="barra-progreso-global" id="barra-progreso" style="width:0%"></div>
+<button type="button" class="boton-pantalla-completa" id="boton-pantalla-completa">⛶ Pantalla completa</button>
+
+<div class="mazo" id="mazo">
+
+  <!-- 1. Portada -->
+  <section class="diapositiva">
+    <div class="kicker">Instituto Finlay de Vacunas — Proyecto de Inteligencia Artificial</div>
+    <h1 class="titulo-portada">🧬 Experto Regulatorio<br>Virtual</h1>
+    <p class="subtitulo">Resultados del levantamiento de requisitos con especialistas del instituto — punto de partida para diseñar la herramienta.</p>
+    <p class="pie-diapositiva">6 especialistas consultados · Septiembre 2026</p>
+  </section>
+
+  <!-- 2. Por qué -->
+  <section class="diapositiva">
+    <div class="kicker">El problema</div>
+    <h2 class="titulo">Cada consulta regulatoria hoy depende de la disponibilidad de una persona</h2>
+    <p class="subtitulo">Antes de construir la solución, le preguntamos directamente a quienes viven ese problema todos los días: ¿qué necesitan realmente de un experto regulatorio disponible en todo momento?</p>
+  </section>
+
+  <!-- 3. Quiénes respondieron -->
+  <section class="diapositiva">
+    <div class="kicker">Quiénes respondieron</div>
+    <h2 class="titulo">Seis perfiles, tres décadas de experiencia combinada de sobra</h2>
+    <div class="grid-perfiles">
+      <div class="tarjeta-perfil"><div class="avatar">RL</div><div class="nombre">Ricardo Leal</div><div class="area">Ciencia de Datos</div><span class="badge">&lt; 5 años</span></div>
+      <div class="tarjeta-perfil"><div class="avatar">DG</div><div class="nombre">Dagmar García</div><div class="area">Vicedirección I+D</div><span class="badge">15–30 años</span></div>
+      <div class="tarjeta-perfil"><div class="avatar">SF</div><div class="nombre">Sonsire Fernández</div><div class="area">Microbiología</div><span class="badge">15–30 años</span></div>
+      <div class="tarjeta-perfil"><div class="avatar">YC</div><div class="nombre">Yanet Climent</div><div class="area">Investigadora Titular</div><span class="badge">15–30 años</span></div>
+      <div class="tarjeta-perfil"><div class="avatar">RG</div><div class="nombre">Raine Garrido</div><div class="area">Fisicoquímica</div><span class="badge">15–30 años</span></div>
+      <div class="tarjeta-perfil"><div class="avatar">LC</div><div class="nombre">Lila Castellanos</div><div class="area">Asesora IFV</div><span class="badge">&gt; 30 años</span></div>
+    </div>
+  </section>
+
+  <!-- 4. Consenso en marcos regulatorios -->
+  <section class="diapositiva">
+    <div class="kicker">Alcance regulatorio</div>
+    <h2 class="titulo">Consenso casi total sobre qué marcos debe dominar</h2>
+    <div class="lista-barras" data-barras>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>CECMED (Cuba)</span><span class="valor-fila">6/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="100"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>EMA (Unión Europea)</span><span class="valor-fila">6/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="100"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>OMS/OPS</span><span class="valor-fila">6/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="100"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>ICH</span><span class="valor-fila">6/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="100"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>FDA (Estados Unidos)</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
+    </div>
+    <p class="pie-diapositiva">5 de 6 además quieren cobertura geográfica global, sin restricción</p>
+  </section>
+
+  <!-- 5. Rigor y confianza -->
+  <section class="diapositiva">
+    <div class="kicker">La condición innegociable</div>
+    <h2 class="titulo">Rigor antes que velocidad</h2>
+    <div class="grid-stats">
+      <div class="tarjeta-stat"><div class="numero">6/6</div><div class="etiqueta">exigen que siempre cite la norma o fuente exacta</div></div>
+      <div class="tarjeta-stat"><div class="numero acento">4.6<span style="font-size:1.4rem">/5</span></div><div class="etiqueta">gravedad promedio asignada a una respuesta incorrecta sin advertirlo</div></div>
+      <div class="tarjeta-stat"><div class="numero">5/6</div><div class="etiqueta">exigen que admita explícitamente cuándo la norma es ambigua</div></div>
+    </div>
+  </section>
+
+  <!-- 6. Funciones más deseadas -->
+  <section class="diapositiva">
+    <div class="kicker">Qué debería hacer</div>
+    <h2 class="titulo">Diez funciones con el mismo nivel de prioridad</h2>
+    <div class="lista-barras">
+      <div class="fila-barra"><div class="etiqueta-fila"><span>Responder con cita exacta de la norma</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>Vigilancia proactiva de cambios normativos</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>Redactar y revisar documentos regulatorios</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>Análisis de brechas frente a una norma</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>Comparar exigencias entre agencias</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>Simular una inspección o auditoría</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
+    </div>
+    <p class="pie-diapositiva">También con 5/6: tutoría, clasificación de riesgo, farmacovigilancia y rastreo bibliográfico</p>
+  </section>
+
+  <!-- 7. Cómo lo quieren usar -->
+  <section class="diapositiva">
+    <div class="kicker">Cómo lo imaginan</div>
+    <h2 class="titulo">Conversación, alertas y algo que puedan llevar en el bolsillo</h2>
+    <div class="chip-fila">
+      <div class="chip">💬 <strong>5/6</strong> — conversación en lenguaje natural</div>
+      <div class="chip">🔔 <strong>5/6</strong> — notificaciones y alertas automáticas</div>
+      <div class="chip">📄 <strong>5/6</strong> — informes descargables</div>
+      <div class="chip">🔗 <strong>4/6</strong> — integración con correo y Word</div>
+      <div class="chip">💻 <strong>6/6</strong> — computadora</div>
+      <div class="chip">📱 <strong>5/6</strong> — teléfono móvil</div>
+    </div>
+  </section>
+
+  <!-- 8. Confidencialidad / arquitectura -->
+  <section class="diapositiva">
+    <div class="kicker">Un hallazgo que condiciona la arquitectura</div>
+    <h2 class="titulo">La mitad exige que nada salga del control del instituto</h2>
+    <div class="grid-stats" style="max-width:38rem; grid-template-columns:repeat(2,1fr)">
+      <div class="tarjeta-stat"><div class="numero acento">3/6</div><div class="etiqueta">«nunca debe salir información confidencial fuera de nuestro control»</div></div>
+      <div class="tarjeta-stat"><div class="numero">3/6</div><div class="etiqueta">acepta servicios externos seguros, o pide orientación para decidir</div></div>
+    </div>
+    <p class="subtitulo" style="margin-top:1.6rem">Esto refuerza evaluar opciones con modelos locales (con salida controlada a internet para actualizarse) junto a las basadas en la nube, no una u otra por defecto.</p>
+  </section>
+
+  <!-- 9. Voz destacada: Lila -->
+  <section class="diapositiva">
+    <div class="kicker">Una voz que fue más allá de las casillas</div>
+    <blockquote class="cita">
+      «Monitorear publicaciones, resumir y analizar los documentos que yo seleccione, clasificarlos por carpetas, avisarme cuando exista una nueva versión y elaborar resúmenes que integren varios documentos, detectando diferencias y cambios entre versiones.»
+    </blockquote>
+    <p class="cita-autor">— Lila Castellanos Serra, Asesora IFV, +30 años de experiencia</p>
+    <p class="subtitulo" style="margin-top:1rem">En vez de marcar las opciones predefinidas, describió su propio flujo de trabajo documental. Una perspectiva valiosa que las demás respuestas no capturan por sí solas.</p>
+  </section>
+
+  <!-- 10. Lo que no debe ser -->
+  <section class="diapositiva">
+    <div class="kicker">El límite que todos marcan</div>
+    <h2 class="titulo">Apoyo, no reemplazo del experto humano</h2>
+    <blockquote class="cita" style="font-size:1.15rem">
+      «Que en estos momentos sustituya al experto — aún no se ha llegado a ese momento, por lo que la validación del experto es innegociable.»
+    </blockquote>
+    <p class="cita-autor">— Ricardo Leal Dávila</p>
+    <div class="grid-stats" style="max-width:30rem; grid-template-columns:1fr; margin-top:1.6rem">
+      <div class="tarjeta-stat"><div class="numero">5/6</div><div class="etiqueta">preferiría que funcione como apoyo o borrador que una persona siempre revisa, o según el caso — nadie lo quiere como fuente autorizada única</div></div>
+    </div>
+  </section>
+
+  <!-- 11. Próximos pasos -->
+  <section class="diapositiva">
+    <div class="kicker">Qué sigue</div>
+    <h2 class="titulo">De los requisitos al diseño de la herramienta</h2>
+    <div class="lista-barras" style="max-width:40rem">
+      <div class="chip-fila" style="justify-content:flex-start; text-align:left">
+        <div class="chip">📂 Las 6 respuestas completas están en <strong>/respuestas</strong></div>
+        <div class="chip">🧭 El formulario sigue abierto para sumar más voces del equipo</div>
+        <div class="chip">🛠️ Con el panel de administración ya se pueden crear nuevas encuestas</div>
+        <div class="chip">🚀 Siguiente paso: diseño, implementación y validación intensiva del experto regulatorio</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. Cierre -->
+  <section class="diapositiva">
+    <div class="kicker">Gracias</div>
+    <h1 class="titulo-portada" style="font-size:clamp(2rem,5vw,3.4rem)">Construyamos esto juntos</h1>
+    <p class="subtitulo">Instituto Finlay de Vacunas — Proyecto de Inteligencia Artificial</p>
+  </section>
+
+</div>
+
+<div class="controles">
+  <button type="button" id="boton-anterior" aria-label="Diapositiva anterior">←</button>
+  <span class="contador" id="contador">1 / 12</span>
+  <button type="button" id="boton-siguiente" aria-label="Diapositiva siguiente">→</button>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  const diapositivas = Array.from(document.querySelectorAll(".diapositiva"));
+  const total = diapositivas.length;
+  let actual = 0;
+
+  const contador = document.getElementById("contador");
+  const barraProgreso = document.getElementById("barra-progreso");
+  const botonAnterior = document.getElementById("boton-anterior");
+  const botonSiguiente = document.getElementById("boton-siguiente");
+  const botonPantallaCompleta = document.getElementById("boton-pantalla-completa");
+
+  function animarBarras(diapositiva) {
+    diapositiva.querySelectorAll(".relleno-barra").forEach((barra) => {
+      const valor = barra.dataset.valor || "0";
+      barra.style.width = "0%";
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { barra.style.width = `${valor}%`; });
+      });
+    });
+  }
+
+  function mostrar(indice) {
+    actual = Math.max(0, Math.min(total - 1, indice));
+    diapositivas.forEach((d, i) => d.classList.toggle("activa", i === actual));
+    contador.textContent = `${actual + 1} / ${total}`;
+    barraProgreso.style.width = `${((actual + 1) / total) * 100}%`;
+    botonAnterior.disabled = actual === 0;
+    botonSiguiente.disabled = actual === total - 1;
+    animarBarras(diapositivas[actual]);
+  }
+
+  function siguiente() { if (actual < total - 1) mostrar(actual + 1); }
+  function anterior() { if (actual > 0) mostrar(actual - 1); }
+
+  botonSiguiente.addEventListener("click", siguiente);
+  botonAnterior.addEventListener("click", anterior);
+
+  document.addEventListener("keydown", (evento) => {
+    if (["ArrowRight", "PageDown", " "].includes(evento.key)) { evento.preventDefault(); siguiente(); }
+    else if (["ArrowLeft", "PageUp"].includes(evento.key)) { evento.preventDefault(); anterior(); }
+    else if (evento.key === "Home") { evento.preventDefault(); mostrar(0); }
+    else if (evento.key === "End") { evento.preventDefault(); mostrar(total - 1); }
+  });
+
+  let inicioX = null;
+  document.addEventListener("touchstart", (e) => { inicioX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener("touchend", (e) => {
+    if (inicioX === null) return;
+    const delta = e.changedTouches[0].clientX - inicioX;
+    if (Math.abs(delta) > 60) { delta < 0 ? siguiente() : anterior(); }
+    inicioX = null;
+  }, { passive: true });
+
+  function alternarPantallaCompleta() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+      botonPantallaCompleta.textContent = "⛶ Salir de pantalla completa";
+    } else {
+      document.exitFullscreen().catch(() => {});
+      botonPantallaCompleta.textContent = "⛶ Pantalla completa";
+    }
+  }
+  botonPantallaCompleta.addEventListener("click", alternarPantallaCompleta);
+  document.addEventListener("fullscreenchange", () => {
+    botonPantallaCompleta.textContent = document.fullscreenElement ? "⛶ Salir de pantalla completa" : "⛶ Pantalla completa";
+  });
+
+  mostrar(0);
+})();
+</script>
+
+</body>
+</html>
