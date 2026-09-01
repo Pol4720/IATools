@@ -1,0 +1,147 @@
+/* Panel de administración — estilos adicionales sobre estilos.css */
+
+.admin-pasos { padding-left: 1.2rem; }
+.admin-pasos li { margin-bottom: 0.4rem; }
+
+.admin-campo { margin-bottom: 1rem; }
+.admin-campo label { display: block; font-weight: 600; margin-bottom: 0.35rem; }
+.admin-campo small { display: block; color: var(--color-texto-suave); margin-top: 0.3rem; font-size: 0.82rem; }
+.admin-campo input[type="text"],
+.admin-campo input[type="password"],
+.admin-campo input[type="email"],
+.admin-campo textarea { width: 100%; }
+
+.admin-campo-par {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 640px) {
+  .admin-campo-par { grid-template-columns: 1fr; }
+}
+
+.admin-mensaje {
+  padding: 0.65rem 0.9rem;
+  border-radius: 8px;
+  background: var(--color-fondo);
+  border-left: 3px solid var(--color-primario);
+  font-size: 0.92rem;
+  margin: 0.75rem 0;
+}
+.admin-mensaje-error { border-left-color: #c0392b; }
+.admin-mensaje-ok { border-left-color: var(--color-exito); }
+
+.admin-fieldset {
+  border: 1px solid var(--color-borde);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.25rem;
+}
+.admin-fieldset legend { padding: 0 0.4rem; }
+.admin-fieldset > textarea { width: 100%; }
+
+.admin-fila-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.admin-listado { display: grid; gap: 0.75rem; }
+.admin-encuesta-fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border: 1.5px solid var(--color-borde);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+}
+.admin-encuesta-fila h3 { margin: 0 0 0.2rem; }
+.admin-encuesta-fila p { margin: 0; color: var(--color-texto-suave); font-size: 0.88rem; }
+.admin-encuesta-acciones { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.admin-estado-inactiva {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-alerta);
+  background: color-mix(in srgb, var(--color-alerta) 15%, transparent);
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  margin-left: 0.5rem;
+}
+
+.admin-grid-editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .admin-grid-editor { grid-template-columns: 1fr; }
+}
+
+.admin-columna-previa {
+  position: sticky;
+  top: 6rem;
+}
+.admin-iframe-previa {
+  width: 100%;
+  height: 70vh;
+  border: 1.5px solid var(--color-borde);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.admin-ayuda-json { font-size: 0.85rem; color: var(--color-texto-suave); }
+.admin-ayuda-json code {
+  background: var(--color-fondo);
+  padding: 0.05rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.admin-botones-snippet {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0.75rem;
+}
+.admin-botones-snippet .boton { font-size: 0.82rem; padding: 0.45rem 0.8rem; }
+
+.admin-json {
+  width: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  tab-size: 2;
+}
+
+.admin-botones-guardar {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 1.25rem 0 0.5rem;
+}
+
+.admin-zona-peligro {
+  margin-top: 2rem;
+  border: 1.5px solid #c0392b;
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+}
+.admin-zona-peligro summary { cursor: pointer; font-weight: 700; color: #c0392b; }
+.admin-zona-peligro p { color: var(--color-texto-suave); font-size: 0.9rem; }
+
+.boton-peligro {
+  background: #c0392b;
+  color: #fff;
+}
+.boton-peligro:hover { background: #9c2c20; }
+
+.boton-idioma[data-sesion] { font-size: 0.85rem; }
