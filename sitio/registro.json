@@ -1,0 +1,14 @@
+{
+  "encuestas": [
+    {
+      "slug": "experto-regulatorio",
+      "titulo_es": "Experto Regulatorio Virtual",
+      "titulo_en": "Virtual Regulatory Expert",
+      "descripcion_es": "Requisitos para un experto virtual en marco regulatorio biofarmacéutico, biotecnológico y de inteligencia artificial.",
+      "descripcion_en": "Requirements for a virtual expert in biopharmaceutical, biotechnology and AI regulatory affairs.",
+      "icono": "🧬",
+      "activa": true,
+      "creada": "2026-08-27"
+    }
+  ]
+}
