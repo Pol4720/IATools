@@ -6,7 +6,7 @@
 <title>Formulario de requisitos — Experto Regulatorio Virtual | Instituto Finlay de Vacunas</title>
 <meta name="description" content="Formulario para levantar los requisitos de un experto virtual en marco regulatorio biofarmacéutico, biotecnológico y de inteligencia artificial.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧬</text></svg>">
-<link rel="stylesheet" href="./assets/css/estilos.css">
+<link rel="stylesheet" href="../../motor/css/estilos.css">
 </head>
 <body>
 
@@ -15,7 +15,9 @@
 <header class="encabezado">
   <div class="encabezado-fila">
     <div class="encabezado-marca">
-      <span class="encabezado-icono" aria-hidden="true">🧬</span>
+      <a href="../../" class="encabezado-icono-enlace" aria-label="Ir al listado de encuestas">
+        <span class="encabezado-icono" aria-hidden="true">🧬</span>
+      </a>
       <div>
         <p class="encabezado-institucion" data-i18n="meta.subtitulo">Instituto Finlay de Vacunas — Proyecto de Inteligencia Artificial</p>
         <h1 class="encabezado-titulo" data-i18n="meta.titulo">Formulario de requisitos: Experto Regulatorio Virtual</h1>
@@ -68,20 +70,29 @@
     <section id="pantalla-envio" class="tarjeta envio" hidden>
       <h2 data-i18n="ui.envioTitulo">Enviar sus respuestas</h2>
       <ol class="envio-pasos" id="envio-instrucciones"></ol>
+
       <div class="envio-botones">
-        <button type="button" id="boton-enviar-github" class="boton boton-primario boton-grande" data-i18n="ui.enviarGithub">Enviar mis respuestas</button>
-        <button type="button" id="boton-descargar-md" class="boton boton-secundario" data-i18n="ui.descargarTexto">Descargar copia (texto)</button>
-        <button type="button" id="boton-descargar-json" class="boton boton-secundario" data-i18n="ui.descargarJson">Descargar copia (datos)</button>
+        <button type="button" id="boton-enviar-correo" class="boton boton-primario boton-grande" data-i18n="ui.enviarCorreo">Enviar mis respuestas</button>
       </div>
       <p class="envio-resultado" id="envio-resultado" role="status" hidden></p>
-      <p class="envio-nota" data-i18n="ui.envioNotaAlternativa">¿No tiene cuenta de GitHub o prefiere no usarla? Descargue una copia de sus respuestas y compártala por la vía que le resulte más cómoda; alguien del equipo la incorporará por usted.</p>
+      <p class="envio-nota" data-i18n="ui.envioNotaAlternativa">En cualquier momento puede descargar una copia de sus respuestas y compartirla por la vía que le resulte más cómoda; alguien del equipo la incorporará por usted.</p>
+
+      <details class="envio-otras-opciones">
+        <summary data-i18n="ui.otrasOpcionesEnvioTitulo">¿Tiene cuenta de GitHub?</summary>
+        <p data-i18n="ui.otrasOpcionesEnvioDescripcion"></p>
+        <div class="envio-botones envio-botones-secundarios">
+          <button type="button" id="boton-enviar-github" class="boton boton-secundario" data-i18n="ui.enviarGithub">Enviar por GitHub</button>
+          <button type="button" id="boton-descargar-md" class="boton boton-secundario" data-i18n="ui.descargarTexto">Descargar copia (texto)</button>
+          <button type="button" id="boton-descargar-json" class="boton boton-secundario" data-i18n="ui.descargarJson">Descargar copia (datos)</button>
+        </div>
+      </details>
     </section>
   </form>
 
 </main>
 
 <footer class="pie">
-  <p data-i18n="ui.pieTexto">Instituto Finlay de Vacunas — Formulario de requisitos para un experto regulatorio virtual.</p>
+  <p data-i18n="ui.pieTexto">Instituto Finlay de Vacunas — Plataforma de encuestas del proyecto de Inteligencia Artificial.</p>
   <p class="pie-secundario">
     <a id="enlace-version-pdf" href="./pdf/formulario-requisitos-ia-regulatoria-es.pdf" data-i18n="ui.versionPdf">¿Prefiere responder en papel o sin conexión? Descargue la versión en PDF editable.</a>
   </p>
@@ -89,7 +100,17 @@
 
 <div id="region-anuncios" class="visualmente-oculto" role="status" aria-live="polite"></div>
 
-<script src="./assets/js/i18n-ui.js"></script>
-<script src="./assets/js/app.js"></script>
+<script>
+  window.CONFIG_ENCUESTA = {
+    slug: "experto-regulatorio",
+    datos: "./preguntas.json",
+    pdfBase: "./pdf/formulario-requisitos-ia-regulatoria",
+    correoDestino: "matosrichard58@gmail.com",
+    repoOwner: "Pol4720",
+    repoName: "IATools",
+  };
+</script>
+<script src="../../motor/js/i18n-ui.js"></script>
+<script src="../../motor/js/app.js"></script>
 </body>
 </html>

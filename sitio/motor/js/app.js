@@ -1,19 +1,27 @@
 /**
- * Motor del formulario de requisitos — Experto Regulatorio Virtual.
- * Renderiza dinámicamente a partir de data/preguntas.json, guarda un
- * borrador en localStorage y, al enviar, abre un "issue" de GitHub
- * pre-rellenado (sin backend, sin credenciales expuestas) que un flujo
- * de trabajo del repositorio convierte automáticamente en un archivo
- * versionado dentro de /respuestas.
+ * Motor compartido de encuestas de la plataforma IATools.
+ * Renderiza dinámicamente a partir del preguntas.json de la encuesta
+ * indicada en window.CONFIG_ENCUESTA, guarda un borrador en localStorage
+ * y, al enviar, descarga un archivo con las respuestas y abre el
+ * programa de correo del respondiente ya dirigido y con el asunto
+ * completado (vía principal: no requiere cuenta de ningún tipo). Como
+ * alternativa para quien sí tenga cuenta de GitHub, también puede abrir
+ * un "issue" pre-rellenado que un flujo de trabajo del repositorio
+ * convierte automáticamente en un archivo versionado dentro de
+ * /respuestas/<encuesta>.
  */
 (function () {
   "use strict";
 
-  const REPO_OWNER = "Pol4720";
-  const REPO_NAME = "IATools";
-  const ISSUE_LABEL = "respuesta-formulario";
-  const CLAVE_RESPUESTAS = "finlay-experto-regulatorio:respuestas";
-  const CLAVE_IDIOMA = "finlay-experto-regulatorio:idioma";
+  const CONFIG = window.CONFIG_ENCUESTA || {};
+  const SLUG = CONFIG.slug || "encuesta";
+  const RUTA_DATOS = CONFIG.datos || "./preguntas.json";
+  const RUTA_PDF_BASE = CONFIG.pdfBase || "./pdf/formulario";
+  const REPO_OWNER = CONFIG.repoOwner || "Pol4720";
+  const REPO_NAME = CONFIG.repoName || "IATools";
+  const ISSUE_LABEL = `respuesta:${SLUG}`;
+  const CLAVE_RESPUESTAS = `iatools-encuestas:${SLUG}:respuestas`;
+  const CLAVE_IDIOMA = `iatools-encuestas:${SLUG}:idioma`;
   const VALOR_OTRO = "__otro__";
 
   const estado = {
@@ -39,7 +47,20 @@
   // ---------------------------------------------------------------
 
   async function iniciar() {
-    const resp = await fetch("./data/preguntas.json", { cache: "no-store" });
+    if (CONFIG.datosInline) {
+      // Modo vista previa (usado por el panel de administración): los
+      // datos ya vienen en memoria, sin necesidad de red ni borrador.
+      estado.datos = CONFIG.datosInline;
+      document.documentElement.lang = estado.idioma;
+      actualizarBotonIdioma();
+      renderTextosEstaticos();
+      renderIntro();
+      construirPasos();
+      actualizarProgreso();
+      conectarEventos();
+      return;
+    }
+    const resp = await fetch(RUTA_DATOS, { cache: "no-store" });
     estado.datos = await resp.json();
 
     cargarBorrador();
@@ -101,12 +122,7 @@
   function actualizarBotonIdioma() {
     el("boton-idioma-texto").textContent = estado.idioma === "es" ? "EN" : "ES";
     el("boton-idioma").setAttribute("aria-label", estado.idioma === "es" ? "Switch to English" : "Cambiar a español");
-    el("enlace-version-pdf").setAttribute(
-      "href",
-      estado.idioma === "es"
-        ? "./pdf/formulario-requisitos-ia-regulatoria-es.pdf"
-        : "./pdf/formulario-requisitos-ia-regulatoria-en.pdf"
-    );
+    el("enlace-version-pdf").setAttribute("href", `${RUTA_PDF_BASE}-${estado.idioma}.pdf`);
   }
 
   // ---------------------------------------------------------------
@@ -576,6 +592,32 @@
     anunciar(t("anuncioDescarga"));
   }
 
+  // Vía principal de envío: no requiere ninguna cuenta. El cuerpo completo
+  // de un mailto: se trunca en muchos clientes bastante antes de lo que
+  // ocuparía una respuesta detallada (y no es posible adjuntar un archivo
+  // por JavaScript), así que el mensaje solo lleva instrucciones breves y
+  // el archivo con las respuestas se descarga aparte, para adjuntarlo a mano.
+  function enviarPorCorreo() {
+    const markdown = construirMarkdown();
+    const nombre = (estado.respuestas.nombre && estado.respuestas.nombre.trim()) || (estado.idioma === "es" ? "Anónimo" : "Anonymous");
+    const fecha = new Date().toISOString().slice(0, 10);
+    const nombreArchivo = `respuestas-${SLUG}-${fecha}.md`;
+    descargarArchivo(nombreArchivo, markdown, "text/markdown;charset=utf-8");
+
+    const destino = CONFIG.correoDestino || "";
+    const asunto = `${t("correoAsuntoPrefijo")}: ${nombre} — ${fecha}`;
+    const parametros = new URLSearchParams({ subject: asunto, body: t("correoCuerpo", nombreArchivo) });
+    const mailto = `mailto:${destino}?${parametros.toString()}`;
+
+    // Pequeña espera para que el navegador dispare primero la descarga.
+    window.setTimeout(() => { window.location.href = mailto; }, 300);
+
+    anunciar(t("anuncioEnvioCorreo"));
+    const resultado = el("envio-resultado");
+    resultado.hidden = false;
+    resultado.innerHTML = t("envioResultadoCorreo", nombreArchivo, destino);
+  }
+
   // Margen prudente por debajo de los límites prácticos de longitud de URL
   // de navegadores/servidores, para que el cuerpo del issue nunca quede
   // truncado a mitad de una respuesta.
@@ -637,13 +679,14 @@
     el("boton-siguiente").addEventListener("click", avanzar);
     el("boton-anterior").addEventListener("click", retroceder);
 
+    el("boton-enviar-correo").addEventListener("click", enviarPorCorreo);
     el("boton-enviar-github").addEventListener("click", enviarPorGitHub);
     el("boton-descargar-md").addEventListener("click", () => {
-      descargarArchivo("respuestas-experto-regulatorio.md", construirMarkdown(), "text/markdown;charset=utf-8");
+      descargarArchivo(`respuestas-${SLUG}.md`, construirMarkdown(), "text/markdown;charset=utf-8");
     });
     el("boton-descargar-json").addEventListener("click", () => {
       const datos = JSON.stringify({ idioma: estado.idioma, fecha: new Date().toISOString(), respuestas: estado.respuestas }, null, 2);
-      descargarArchivo("respuestas-experto-regulatorio.json", datos, "application/json;charset=utf-8");
+      descargarArchivo(`respuestas-${SLUG}.json`, datos, "application/json;charset=utf-8");
     });
 
     el("boton-idioma").addEventListener("click", () => {
