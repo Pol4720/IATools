@@ -1,0 +1,95 @@
+{
+  "idioma": "es",
+  "fecha": "2026-08-29T21:47:27.904Z",
+  "respuestas": {
+    "nombre": "Ricardo Leal Dávila ",
+    "area_especialidad": "Ciencia de Datos ",
+    "rol_actual": "EP Grupo Ciencia de Datos ",
+    "anos_experiencia": "menos5",
+    "contacto_opcional": "rleal@finlay.edu.cu",
+    "productos_interes": [
+      "vacunas",
+      "ensayos_clinicos",
+      "ia_producto",
+      "bpm",
+      "farmacovigilancia",
+      "bioseguridad",
+      "propiedad_intelectual",
+      "__otro__"
+    ],
+    "productos_interes__otro_texto": "Calidad de Datos",
+    "marcos_regulatorios": [
+      "cecmed",
+      "fda",
+      "ema",
+      "oms_ops",
+      "ich",
+      "iso",
+      "ia_regulacion"
+    ],
+    "alcance_geografico": "global",
+    "funciones_principales": [
+      "consulta_experta",
+      "vigilancia_normativa",
+      "redaccion_documentos",
+      "analisis_brechas",
+      "comparar_agencias",
+      "simular_auditoria",
+      "capacitacion",
+      "clasificacion_riesgo",
+      "farmacovigilancia_seguimiento",
+      "traduccion_simplificacion",
+      "evaluar_ia_propia",
+      "rastreo_bibliografico",
+      "checklist_tramites"
+    ],
+    "fuentes_prioritarias": [
+      "cecmed_normas",
+      "documentos_internos",
+      "ich_guias",
+      "fda_guias",
+      "ema_guias",
+      "oms_publicaciones",
+      "gaceta_oficial",
+      "normas_iso",
+      "ia_regulacion_internacional"
+    ],
+    "idiomas_fuentes": [
+      "espanol",
+      "ingles"
+    ],
+    "frecuencia_actualizacion": "bajo_demanda",
+    "modo_interaccion": [
+      "conversacion",
+      "notificaciones",
+      "panel_visual",
+      "integracion_herramientas"
+    ],
+    "dispositivo_uso": [
+      "computadora",
+      "telefono",
+      "tableta"
+    ],
+    "disponibilidad_offline": "ambas",
+    "tono": "depende",
+    "nivel_detalle_defecto": "completas",
+    "citar_fuentes_siempre": "siempre",
+    "reconocer_incertidumbre": "decir_incertidumbre",
+    "criticidad_error": "5",
+    "mecanismos_verificacion": [
+      "enlaces_fuente",
+      "nivel_confianza",
+      "fecha_actualizacion",
+      "revision_humana"
+    ],
+    "uso_previsto": "borrador_revisado",
+    "datos_confidenciales": "nunca_salir",
+    "ejemplos_preguntas": "1.- Cuáles requisitos debe cumplir un software con o sin soporte IA para ser candidato a utilizarse en el sector biotecnológico nacional cubano.\n2.- Si fuera establecer niveles o clasificación de calidad a los datos, cuáles podrían ser estos y cuáles serían las métricas y otros requisitos para ubicarlos en el nivel correspondiente.\n3.- Cuáles requisitos regulatorios específicos debe cumplir una herramienta de software con soporte IA para un país específico.",
+    "situacion_frecuente": "Tenemos desarrollado una herramienta de software con soporte de IA y necesitamos la certificación de calidad del mismo por la autoridad competente y el autorizo para el empleo en el sector biotecnológico nacional.En ambos casos se necesitan todos los requerimientos regulatorios necesarios a cumplir por este sistema.",
+    "imprescindible": "No alucinar, no inventarse respuesta ajenas a la normas. Darnos una respuesta exhaustiva pero enfocada solo en el tema concreto. Alertarnos de sesgos y riesgos a mitigar.",
+    "deseable_no_esencial": "Por ejemplo, al proyectar el desarrollo de un tipo de herramienta de software con o sin soporte IA pudiéramos conocer de antemano qué requisitos regulatorios debe cumplir por las normas actualizadas, inluso proponernos bloques de código específicos para cumplir con algunos de ellos.",
+    "preocupaciones": "Que en estos momentos sustituya al experto. Aún no se ha llegado a ese momento por lo que la validación del experto es innegociable.",
+    "sin_limites": "Que sea multimodal, que sea capaz de hallar, por ejemplo, en el texto de un protocolo clínico, en un dossier, en un IPS de farmacovigilancia, en un código etc, incongruencias y vacios regulatorios presentando soluciones concretas. Que tenga su MCP y preparado para la IA Agentica. Me gustaría que la herramienta pueda tener una onda así como Notebook.Gemini.",
+    "comentarios_finales": "Excelente idea, puede ser una herramienta para otras múltiples necesidades informativas. En el futuro está manera cada vez que sea apropiada emplearla y para que esté todo en orden someterla previamente a la evaluación del comité independiente de IA."
+  }
+}

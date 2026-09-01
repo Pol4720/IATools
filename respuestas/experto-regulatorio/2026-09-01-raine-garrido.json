@@ -1,0 +1,91 @@
+{
+  "idioma": "es",
+  "fuente": "PDF rellenado manualmente (formulario-requisitos-ia-regulatoria-es (2).pdf)",
+  "respuestas": {
+    "nombre": "Raine Garrido",
+    "area_especialidad": "análisis físico-químico de biomoléculas",
+    "rol_actual": "jefe de departamento",
+    "anos_experiencia": "15a30",
+    "contacto_opcional": "rgarrido@finlay.edu.cu",
+    "productos_interes": [
+      "vacunas",
+      "biofarmacos",
+      "dispositivos",
+      "ensayos_clinicos",
+      "ia_producto",
+      "farmacovigilancia",
+      "bioseguridad",
+      "propiedad_intelectual"
+    ],
+    "marcos_regulatorios": [
+      "cecmed",
+      "fda",
+      "ema",
+      "oms_ops",
+      "ich",
+      "iso",
+      "ia_regulacion",
+      "otras_agencias"
+    ],
+    "alcance_geografico": "global",
+    "funciones_principales": [
+      "consulta_experta",
+      "vigilancia_normativa",
+      "redaccion_documentos",
+      "analisis_brechas",
+      "comparar_agencias",
+      "simular_auditoria",
+      "capacitacion",
+      "clasificacion_riesgo",
+      "farmacovigilancia_seguimiento",
+      "evaluar_ia_propia",
+      "informes_personalizados",
+      "rastreo_bibliografico",
+      "checklist_tramites",
+      "__otro__"
+    ],
+    "fuentes_prioritarias": [
+      "cecmed_normas",
+      "ich_guias",
+      "oms_publicaciones",
+      "normas_iso"
+    ],
+    "idiomas_fuentes": [
+      "espanol",
+      "ingles"
+    ],
+    "frecuencia_actualizacion": "tiempo_real",
+    "modo_interaccion": [
+      "conversacion",
+      "informes_descargables",
+      "notificaciones",
+      "integracion_herramientas"
+    ],
+    "dispositivo_uso": [
+      "computadora",
+      "telefono",
+      "tableta"
+    ],
+    "disponibilidad_offline": "ambas",
+    "tono": "depende",
+    "nivel_detalle_defecto": "preguntar",
+    "citar_fuentes_siempre": "siempre",
+    "reconocer_incertidumbre": "decir_incertidumbre",
+    "criticidad_error": "3",
+    "mecanismos_verificacion": [
+      "enlaces_fuente",
+      "nivel_confianza",
+      "fecha_actualizacion",
+      "revision_humana",
+      "registro_auditoria"
+    ],
+    "uso_previsto": "ambos_segun_caso",
+    "datos_confidenciales": "servicios_seguros",
+    "ejemplos_preguntas": "1 Estudios de estabilidad 2 Análisis de productos, 3 trazabilidad documental",
+    "situacion_frecuente": "1 preparación para una inspección de la autoridad regulatoria. 2 montaje de un nuevo laboratorio.",
+    "imprescindible": "que no se descuide su desarrollo y perfeccionamiento constante",
+    "deseable_no_esencial": "debe ser imprescindible",
+    "preocupaciones": "errores y dependencia excesiva",
+    "sin_limites": "que acompañe y verifique el funcionamiento (bajo estándar) de los laboratorios de análisis"
+  }
+}

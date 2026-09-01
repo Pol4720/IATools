@@ -1,0 +1,79 @@
+{
+  "idioma": "es",
+  "fuente": "PDF rellenado manualmente (formulario-requisitos-ia-regulatoria-es Sonsire.pdf)",
+  "respuestas": {
+    "nombre": "Sonsire Fernandez Castillo",
+    "area_especialidad": "Microbiologia",
+    "rol_actual": "Investigador Titular",
+    "anos_experiencia": "15a30",
+    "contacto_opcional": "sfernandez@finlay.edu.cu",
+    "productos_interes": [
+      "vacunas",
+      "ensayos_clinicos",
+      "ia_producto",
+      "bpm",
+      "farmacovigilancia"
+    ],
+    "marcos_regulatorios": [
+      "cecmed",
+      "ema",
+      "oms_ops",
+      "ich",
+      "otras_agencias"
+    ],
+    "alcance_geografico": "global",
+    "funciones_principales": [
+      "consulta_experta",
+      "vigilancia_normativa",
+      "redaccion_documentos",
+      "analisis_brechas",
+      "comparar_agencias",
+      "simular_auditoria",
+      "capacitacion",
+      "clasificacion_riesgo",
+      "farmacovigilancia_seguimiento",
+      "traduccion_simplificacion",
+      "evaluar_ia_propia",
+      "informes_personalizados",
+      "rastreo_bibliografico",
+      "checklist_tramites"
+    ],
+    "prioridad_top3": "1, 3, 6",
+    "fuentes_prioritarias": [
+      "cecmed_normas",
+      "documentos_internos",
+      "ich_guias",
+      "fda_guias",
+      "ema_guias",
+      "oms_publicaciones",
+      "ia_regulacion_internacional"
+    ],
+    "idiomas_fuentes": [
+      "espanol",
+      "ingles",
+      "portugues",
+      "frances"
+    ],
+    "frecuencia_actualizacion": "mensual",
+    "modo_interaccion": [
+      "conversacion",
+      "informes_descargables"
+    ],
+    "dispositivo_uso": [
+      "computadora"
+    ],
+    "disponibilidad_offline": "ambas",
+    "tono": "formal",
+    "nivel_detalle_defecto": "completas",
+    "citar_fuentes_siempre": "siempre",
+    "reconocer_incertidumbre": "decir_incertidumbre",
+    "criticidad_error": "5",
+    "mecanismos_verificacion": [
+      "enlaces_fuente",
+      "registro_auditoria"
+    ],
+    "uso_previsto": "borrador_revisado",
+    "datos_confidenciales": "necesita_orientacion",
+    "imprescindible": "Informacion veraz y verificable"
+  }
+}

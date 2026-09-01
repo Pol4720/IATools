@@ -1,0 +1,98 @@
+{
+  "idioma": "es",
+  "fecha": "2026-08-31T14:53:19.432Z",
+  "respuestas": {
+    "nombre": "Dagmar García Rivera",
+    "area_especialidad": "Investigacion-Desarrollo-Clinica",
+    "rol_actual": "Vicedirectora de Investigación -Desarrollo",
+    "anos_experiencia": "15a30",
+    "contacto_opcional": "dagarcia@finlay.edu.cu",
+    "productos_interes": [
+      "vacunas",
+      "ensayos_clinicos",
+      "ia_producto",
+      "bpm",
+      "farmacovigilancia",
+      "bioseguridad",
+      "propiedad_intelectual"
+    ],
+    "marcos_regulatorios": [
+      "cecmed",
+      "fda",
+      "ema",
+      "oms_ops",
+      "ich",
+      "otras_agencias"
+    ],
+    "alcance_geografico": "global",
+    "funciones_principales": [
+      "consulta_experta",
+      "vigilancia_normativa",
+      "redaccion_documentos",
+      "analisis_brechas",
+      "comparar_agencias",
+      "simular_auditoria",
+      "capacitacion",
+      "clasificacion_riesgo",
+      "farmacovigilancia_seguimiento",
+      "traduccion_simplificacion",
+      "evaluar_ia_propia",
+      "informes_personalizados",
+      "rastreo_bibliografico",
+      "checklist_tramites"
+    ],
+    "funciones_principales__otro_texto": "",
+    "prioridad_top3": "2,3, 4",
+    "fuentes_prioritarias": [
+      "cecmed_normas",
+      "documentos_internos",
+      "ich_guias",
+      "fda_guias",
+      "ema_guias",
+      "oms_publicaciones",
+      "gaceta_oficial",
+      "literatura_cientifica",
+      "normas_iso",
+      "ia_regulacion_internacional"
+    ],
+    "idiomas_fuentes": [
+      "espanol",
+      "ingles",
+      "frances"
+    ],
+    "frecuencia_actualizacion": "semanal",
+    "modo_interaccion": [
+      "conversacion",
+      "formularios",
+      "informes_descargables",
+      "notificaciones",
+      "panel_visual",
+      "integracion_herramientas"
+    ],
+    "dispositivo_uso": [
+      "computadora",
+      "telefono"
+    ],
+    "disponibilidad_offline": "ambas",
+    "tono": "formal",
+    "nivel_detalle_defecto": "completas",
+    "citar_fuentes_siempre": "siempre",
+    "reconocer_incertidumbre": "decir_incertidumbre",
+    "criticidad_error": "5",
+    "mecanismos_verificacion": [
+      "enlaces_fuente",
+      "nivel_confianza",
+      "fecha_actualizacion",
+      "registro_auditoria"
+    ],
+    "uso_previsto": "ambos_segun_caso",
+    "datos_confidenciales": "nunca_salir",
+    "ejemplos_preguntas": "Revisión u auditoría de informes y reportes de estudios analíticos, preclínicos, clínicos. \n\nVigilancia activa de temas de interés científico\n\nRevisión, auditoría y correcion de manuscritos científicos. \n",
+    "situacion_frecuente": "Elaboración de protocolo de investigación clínica. \nRevisión y corrección de manuscritos \nPropuesta de estrategia regulatoria de un producto para un nuevo mercado ",
+    "imprescindible": "Que sus fuentes de información sean confiables, y que evite alucinaciones ",
+    "preocupaciones": "Las alucinaciones y la exposición de datos, estrategias propias en una nube ",
+    "sin_limites": "Le pediría que nos permita ser más eficientes, reducir tiempos de análisis de información, elaboración rápida y certera de documentos, reportes, informes, protocolos, dossier. ",
+    "fuentes_prioritarias__otro_texto": "Base de datos de Patentes; páginas web de revistas científicas almmenos del campo de interés, para acceso a instrucciones para autores. Esto último en el caso de que el agente sea capaz de auditar/corregir manuscritos científicos ",
+    "deseable_no_esencial": "No sabría responder"
+  }
+}
