@@ -46,7 +46,12 @@
   }
 
   async function ghApi(ruta, opciones) {
-    const resp = await fetch(`${API}/${ruta}`, {
+    // Sin ruta, la URL debe ser la del repositorio sin barra final
+    // (.../repos/OWNER/REPO), no .../repos/OWNER/REPO/ — GitHub responde
+    // 404 a esa variante con barra, lo que antes rompía la verificación
+    // del token incluso siendo válido.
+    const url = ruta ? `${API}/${ruta}` : API;
+    const resp = await fetch(url, {
       ...opciones,
       headers: {
         Authorization: `Bearer ${estado.token}`,
@@ -110,11 +115,42 @@
   // ---------------------------------------------------------------
 
   async function verificarAcceso() {
-    const resp = await ghApi("");
-    if (!resp.ok) return { ok: false, motivo: `No se pudo acceder al repositorio (código ${resp.status}). Verifique el token.` };
-    const datos = await resp.json();
-    if (!datos.permissions || !datos.permissions.push) {
-      return { ok: false, motivo: "El token es válido, pero no tiene permiso de escritura (Contents: Read and write) sobre este repositorio." };
+    // Paso 1: ¿el token es válido? (independiente de a qué repositorios
+    // alcance, así el mensaje de error distingue "token inválido" de
+    // "token válido pero sin acceso a este repositorio").
+    const respUsuario = await fetch("https://api.github.com/user", {
+      headers: {
+        Authorization: `Bearer ${estado.token}`,
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    });
+    if (!respUsuario.ok) {
+      const err = await respUsuario.json().catch(() => ({}));
+      return {
+        ok: false,
+        motivo: `El token no es válido (código ${respUsuario.status}). ${err.message || "Revise que lo haya copiado completo y que no haya expirado."}`,
+      };
+    }
+
+    // Paso 2: ¿ese token alcanza este repositorio? Se comprueba con una
+    // lectura real (más fiable que el campo "permissions", que no
+    // siempre viene presente según el tipo de token) e informa si el
+    // problema es de alcance o de permiso de escritura.
+    const respRepo = await ghApi("");
+    if (!respRepo.ok) {
+      const err = await respRepo.json().catch(() => ({}));
+      return {
+        ok: false,
+        motivo: `El token es válido, pero no tiene acceso al repositorio ${OWNER}/${REPO} (código ${respRepo.status}). ${err.message || "Revise que el token incluya este repositorio en «Repository access»."}`,
+      };
+    }
+    const datosRepo = await respRepo.json();
+    if (datosRepo.permissions && datosRepo.permissions.push === false) {
+      return {
+        ok: false,
+        motivo: "El token alcanza este repositorio, pero solo con permiso de lectura. Genere uno nuevo con «Contents: Read and write».",
+      };
     }
     return { ok: true };
   }

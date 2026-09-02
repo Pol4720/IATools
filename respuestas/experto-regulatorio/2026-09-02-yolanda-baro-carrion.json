@@ -1,0 +1,81 @@
+{
+  "idioma": "es",
+  "fuente": "PDF rellenado manualmente (recibido 2026-09-02).",
+  "respuestas": {
+    "nombre": "Yolanda Baro Carrion",
+    "area_especialidad": "Control de Calidad",
+    "rol_actual": "Directora de Control de Calidad",
+    "anos_experiencia": "5a15",
+    "contacto_opcional": "ybaro@finlay.edu.cu",
+    "productos_interes": [
+      "vacunas",
+      "biofarmacos",
+      "bpm",
+      "bioseguridad",
+      "propiedad_intelectual"
+    ],
+    "productos_interes__otro_texto": "Desarrollo de tecnicas analiticas",
+    "marcos_regulatorios": [
+      "cecmed",
+      "ema",
+      "oms_ops",
+      "ich",
+      "iso",
+      "ia_regulacion"
+    ],
+    "alcance_geografico": "global",
+    "funciones_principales": [
+      "consulta_experta",
+      "vigilancia_normativa",
+      "redaccion_documentos",
+      "analisis_brechas",
+      "comparar_agencias",
+      "simular_auditoria",
+      "capacitacion",
+      "clasificacion_riesgo",
+      "farmacovigilancia_seguimiento",
+      "traduccion_simplificacion",
+      "evaluar_ia_propia",
+      "informes_personalizados",
+      "rastreo_bibliografico",
+      "checklist_tramites"
+    ],
+    "prioridad_top3": "1,3 y 10",
+    "fuentes_prioritarias": [
+      "ich_guias",
+      "oms_publicaciones",
+      "normas_iso",
+      "ia_regulacion_internacional"
+    ],
+    "idiomas_fuentes": [
+      "espanol",
+      "ingles"
+    ],
+    "frecuencia_actualizacion": "tiempo_real",
+    "modo_interaccion": [
+      "conversacion",
+      "notificaciones"
+    ],
+    "dispositivo_uso": [
+      "computadora",
+      "telefono"
+    ],
+    "disponibilidad_offline": "ambas",
+    "tono": "cercano",
+    "nivel_detalle_defecto": "completas",
+    "citar_fuentes_siempre": "siempre",
+    "reconocer_incertidumbre": "decir_incertidumbre",
+    "criticidad_error": "5",
+    "mecanismos_verificacion": [
+      "enlaces_fuente"
+    ],
+    "uso_previsto": "ambos_segun_caso",
+    "datos_confidenciales": "nunca_salir",
+    "ejemplos_preguntas": "1.Actualizacion regulatoria sobre requisitos imprescindibles en control de calidad de vacunas.Alter [el texto queda cortado a mitad de palabra en el PDF original; se transcribe tal cual, sin completar]",
+    "imprescindible": "Que tenga conocimiento tecnico y regulatorio del tema a preguntar y que cite referencias",
+    "deseable_no_esencial": "Que muestre imagenes",
+    "preocupaciones": "Errores y fuentes de informacion no confiable",
+    "sin_limites": "Que siempre tenga respuestas que expliquen en detalle y cite referencias actualizadas"
+  },
+  "fecha": "2026-09-02T00:00:00.000Z"
+}

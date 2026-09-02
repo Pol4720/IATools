@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Experto Regulatorio Virtual — Resultados del levantamiento de requisitos</title>
-<meta name="description" content="Resumen visual de las 6 respuestas recogidas para definir el Experto Regulatorio Virtual del Instituto Finlay de Vacunas.">
+<meta name="description" content="Resumen visual de las respuestas recogidas para definir el Experto Regulatorio Virtual del Instituto Finlay de Vacunas.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧬</text></svg>">
 <style>
 :root {
@@ -17,8 +17,23 @@
   --acento-suave: rgba(242, 177, 52, 0.16);
   --texto: #f2f7f5;
   --texto-suave: #9db3ae;
-  --rojo: #ff6b6b;
+  --pista: rgba(255, 255, 255, 0.09);
+  --panel: rgba(16, 32, 29, 0.85);
   --fuente: "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+:root[data-tema="claro"] {
+  --fondo: #f7faf9;
+  --fondo-tarjeta: #ffffff;
+  --borde: #d7e3e0;
+  --primario: #0f8f80;
+  --primario-suave: rgba(15, 143, 128, 0.12);
+  --acento: #b9770e;
+  --acento-suave: rgba(185, 119, 14, 0.14);
+  --texto: #12211f;
+  --texto-suave: #4f6461;
+  --pista: rgba(15, 60, 55, 0.09);
+  --panel: rgba(255, 255, 255, 0.9);
 }
 
 * { box-sizing: border-box; }
@@ -29,6 +44,7 @@ body {
   color: var(--texto);
   font-family: var(--fuente);
   overflow: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .mazo {
@@ -45,7 +61,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 5vh 7vw 12vh;
+  padding: 5vh 7vw 13vh;
   text-align: center;
   opacity: 0;
   transform: translateY(14px);
@@ -53,44 +69,31 @@ body {
 }
 .diapositiva.activa { display: flex; opacity: 1; transform: translateY(0); }
 
-.diapositiva .marca {
-  position: absolute;
-  top: 2.2rem;
-  left: 2.4rem;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--texto-suave);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .kicker {
-  font-size: 0.85rem;
-  letter-spacing: 0.12em;
+  font-size: 1.05rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--primario);
   font-weight: 700;
-  margin-bottom: 0.9rem;
+  margin-bottom: 1rem;
 }
 h1.titulo-portada {
-  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  font-size: clamp(3rem, 7vw, 5.4rem);
   line-height: 1.05;
-  margin: 0 0 1rem;
+  margin: 0 0 1.1rem;
   font-weight: 800;
 }
 h2.titulo {
-  font-size: clamp(1.7rem, 4vw, 2.9rem);
+  font-size: clamp(2.1rem, 4.6vw, 3.5rem);
   line-height: 1.15;
-  margin: 0 0 1.6rem;
+  margin: 0 0 1.7rem;
   font-weight: 800;
-  max-width: 46rem;
+  max-width: 48rem;
 }
 .subtitulo {
-  font-size: clamp(1rem, 1.6vw, 1.3rem);
+  font-size: clamp(1.2rem, 1.9vw, 1.55rem);
   color: var(--texto-suave);
-  max-width: 42rem;
+  max-width: 44rem;
   margin: 0 auto;
   line-height: 1.5;
 }
@@ -100,7 +103,7 @@ h2.titulo {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.4rem;
   width: 100%;
-  max-width: 62rem;
+  max-width: 66rem;
   margin-top: 1rem;
 }
 @media (max-width: 760px) { .grid-stats { grid-template-columns: 1fr; } }
@@ -109,41 +112,42 @@ h2.titulo {
   background: var(--fondo-tarjeta);
   border: 1px solid var(--borde);
   border-radius: 18px;
-  padding: 1.8rem 1.4rem;
+  padding: 2rem 1.5rem;
 }
 .tarjeta-stat .numero {
-  font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+  font-size: clamp(3rem, 5vw, 4.2rem);
   font-weight: 800;
   color: var(--primario);
   line-height: 1;
 }
 .tarjeta-stat .numero.acento { color: var(--acento); }
 .tarjeta-stat .etiqueta {
-  margin-top: 0.6rem;
-  font-size: 0.95rem;
+  margin-top: 0.7rem;
+  font-size: 1.1rem;
   color: var(--texto-suave);
   line-height: 1.4;
 }
 
 .lista-barras {
   width: 100%;
-  max-width: 44rem;
+  max-width: 48rem;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 1rem;
   text-align: left;
 }
-.fila-barra { display: flex; flex-direction: column; gap: 0.35rem; }
+.fila-barra { display: flex; flex-direction: column; gap: 0.4rem; }
 .fila-barra .etiqueta-fila {
   display: flex;
   justify-content: space-between;
-  font-size: 0.95rem;
+  font-size: 1.12rem;
+  gap: 1rem;
 }
-.fila-barra .valor-fila { color: var(--primario); font-weight: 700; }
+.fila-barra .valor-fila { color: var(--primario); font-weight: 700; flex-shrink: 0; }
 .pista-barra {
-  height: 12px;
+  height: 14px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.07);
+  background: var(--pista);
   overflow: hidden;
 }
 .relleno-barra {
@@ -156,34 +160,36 @@ h2.titulo {
 
 .grid-perfiles {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.1rem;
   width: 100%;
-  max-width: 60rem;
+  max-width: 66rem;
 }
-@media (max-width: 760px) { .grid-perfiles { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px) { .grid-perfiles { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 620px) { .grid-perfiles { grid-template-columns: repeat(2, 1fr); } }
 .tarjeta-perfil {
   background: var(--fondo-tarjeta);
   border: 1px solid var(--borde);
   border-radius: 16px;
-  padding: 1.2rem 1rem;
+  padding: 1.3rem 1rem;
 }
 .tarjeta-perfil .avatar {
-  width: 44px; height: 44px;
+  width: 48px; height: 48px;
   border-radius: 50%;
   background: var(--primario-suave);
   color: var(--primario);
   display: flex; align-items: center; justify-content: center;
   font-weight: 800;
-  margin: 0 auto 0.6rem;
+  font-size: 1.05rem;
+  margin: 0 auto 0.65rem;
 }
-.tarjeta-perfil .nombre { font-weight: 700; font-size: 0.95rem; }
-.tarjeta-perfil .area { font-size: 0.82rem; color: var(--texto-suave); margin-top: 0.15rem; }
+.tarjeta-perfil .nombre { font-weight: 700; font-size: 1.08rem; }
+.tarjeta-perfil .area { font-size: 0.95rem; color: var(--texto-suave); margin-top: 0.2rem; }
 .tarjeta-perfil .badge {
   display: inline-block;
-  margin-top: 0.5rem;
-  font-size: 0.7rem;
-  padding: 0.15rem 0.55rem;
+  margin-top: 0.55rem;
+  font-size: 0.78rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 999px;
   background: var(--acento-suave);
   color: var(--acento);
@@ -191,40 +197,39 @@ h2.titulo {
 }
 
 blockquote.cita {
-  max-width: 46rem;
-  font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+  max-width: 48rem;
+  font-size: clamp(1.5rem, 2.8vw, 1.95rem);
   line-height: 1.5;
   font-style: italic;
   color: var(--texto);
-  margin: 0 0 1.2rem;
-  position: relative;
+  margin: 0 0 1.3rem;
 }
-.cita-autor { color: var(--primario); font-weight: 700; font-style: normal; }
+.cita-autor { color: var(--primario); font-weight: 700; font-style: normal; font-size: 1.1rem; }
 
 .chip-fila {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
+  gap: 0.7rem;
   justify-content: center;
-  max-width: 48rem;
-  margin-top: 1.2rem;
+  max-width: 52rem;
+  margin-top: 1.3rem;
 }
 .chip {
   background: var(--fondo-tarjeta);
   border: 1px solid var(--borde);
   border-radius: 999px;
-  padding: 0.5rem 1rem;
-  font-size: 0.88rem;
+  padding: 0.6rem 1.15rem;
+  font-size: 1.05rem;
   color: var(--texto-suave);
 }
 .chip strong { color: var(--texto); }
 
 .pie-diapositiva {
   position: absolute;
-  bottom: 6rem;
+  bottom: 6.5rem;
   left: 0; right: 0;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--texto-suave);
 }
 
@@ -238,7 +243,7 @@ blockquote.cita {
   display: flex;
   align-items: center;
   gap: 0.9rem;
-  background: rgba(16, 32, 29, 0.85);
+  background: var(--panel);
   backdrop-filter: blur(6px);
   border: 1px solid var(--borde);
   border-radius: 999px;
@@ -246,34 +251,38 @@ blockquote.cita {
   z-index: 20;
 }
 .controles button {
-  width: 2.4rem; height: 2.4rem;
+  width: 2.5rem; height: 2.5rem;
   border-radius: 50%;
   border: none;
   background: var(--primario-suave);
   color: var(--primario);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: background 0.15s ease;
 }
-.controles button:hover { background: var(--primario); color: #06201c; }
+.controles button:hover { background: var(--primario); color: var(--fondo); }
 .controles button:disabled { opacity: 0.35; cursor: not-allowed; }
-.contador { font-size: 0.85rem; color: var(--texto-suave); min-width: 3.4rem; text-align: center; }
+.contador { font-size: 0.9rem; color: var(--texto-suave); min-width: 3.6rem; text-align: center; }
 
-.boton-pantalla-completa {
+.controles-superiores {
   position: fixed;
   top: 1.6rem;
   right: 1.8rem;
   z-index: 20;
-  background: rgba(16, 32, 29, 0.85);
+  display: flex;
+  gap: 0.6rem;
+}
+.boton-superior {
+  background: var(--panel);
   border: 1px solid var(--borde);
   color: var(--texto-suave);
   border-radius: 999px;
-  padding: 0.5rem 1rem;
-  font-size: 0.82rem;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.88rem;
   cursor: pointer;
 }
-.boton-pantalla-completa:hover { color: var(--texto); border-color: var(--primario); }
+.boton-superior:hover { color: var(--texto); border-color: var(--primario); }
 
 .barra-progreso-global {
   position: fixed;
@@ -285,14 +294,17 @@ blockquote.cita {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .diapositiva, .relleno-barra, .barra-progreso-global { transition: none; }
+  .diapositiva, .relleno-barra, .barra-progreso-global, body { transition: none; }
 }
 </style>
 </head>
 <body>
 
 <div class="barra-progreso-global" id="barra-progreso" style="width:0%"></div>
-<button type="button" class="boton-pantalla-completa" id="boton-pantalla-completa">⛶ Pantalla completa</button>
+<div class="controles-superiores">
+  <button type="button" class="boton-superior" id="boton-tema">☀️ Modo claro</button>
+  <button type="button" class="boton-superior" id="boton-pantalla-completa">⛶ Pantalla completa</button>
+</div>
 
 <div class="mazo" id="mazo">
 
@@ -300,21 +312,21 @@ blockquote.cita {
   <section class="diapositiva">
     <div class="kicker">Instituto Finlay de Vacunas — Proyecto de Inteligencia Artificial</div>
     <h1 class="titulo-portada">🧬 Experto Regulatorio<br>Virtual</h1>
-    <p class="subtitulo">Resultados del levantamiento de requisitos con especialistas del instituto — punto de partida para diseñar la herramienta.</p>
-    <p class="pie-diapositiva">6 especialistas consultados · Septiembre 2026</p>
+    <p class="subtitulo">Resultados del levantamiento de requisitos con especialistas del instituto.</p>
+    <p class="pie-diapositiva">7 especialistas consultados · Septiembre 2026</p>
   </section>
 
   <!-- 2. Por qué -->
   <section class="diapositiva">
     <div class="kicker">El problema</div>
-    <h2 class="titulo">Cada consulta regulatoria hoy depende de la disponibilidad de una persona</h2>
-    <p class="subtitulo">Antes de construir la solución, le preguntamos directamente a quienes viven ese problema todos los días: ¿qué necesitan realmente de un experto regulatorio disponible en todo momento?</p>
+    <h2 class="titulo">Cada consulta regulatoria depende hoy de que alguien esté disponible</h2>
+    <p class="subtitulo">Antes de construir la solución, le preguntamos al equipo: ¿qué necesitan de un experto siempre disponible?</p>
   </section>
 
   <!-- 3. Quiénes respondieron -->
   <section class="diapositiva">
     <div class="kicker">Quiénes respondieron</div>
-    <h2 class="titulo">Seis perfiles, tres décadas de experiencia combinada de sobra</h2>
+    <h2 class="titulo">Siete perfiles, décadas de experiencia combinada</h2>
     <div class="grid-perfiles">
       <div class="tarjeta-perfil"><div class="avatar">RL</div><div class="nombre">Ricardo Leal</div><div class="area">Ciencia de Datos</div><span class="badge">&lt; 5 años</span></div>
       <div class="tarjeta-perfil"><div class="avatar">DG</div><div class="nombre">Dagmar García</div><div class="area">Vicedirección I+D</div><span class="badge">15–30 años</span></div>
@@ -322,21 +334,22 @@ blockquote.cita {
       <div class="tarjeta-perfil"><div class="avatar">YC</div><div class="nombre">Yanet Climent</div><div class="area">Investigadora Titular</div><span class="badge">15–30 años</span></div>
       <div class="tarjeta-perfil"><div class="avatar">RG</div><div class="nombre">Raine Garrido</div><div class="area">Fisicoquímica</div><span class="badge">15–30 años</span></div>
       <div class="tarjeta-perfil"><div class="avatar">LC</div><div class="nombre">Lila Castellanos</div><div class="area">Asesora IFV</div><span class="badge">&gt; 30 años</span></div>
+      <div class="tarjeta-perfil"><div class="avatar">YB</div><div class="nombre">Yolanda Baro</div><div class="area">Control de Calidad</div><span class="badge">5–15 años</span></div>
     </div>
   </section>
 
   <!-- 4. Consenso en marcos regulatorios -->
   <section class="diapositiva">
     <div class="kicker">Alcance regulatorio</div>
-    <h2 class="titulo">Consenso casi total sobre qué marcos debe dominar</h2>
+    <h2 class="titulo">Consenso total sobre qué marcos debe dominar</h2>
     <div class="lista-barras" data-barras>
-      <div class="fila-barra"><div class="etiqueta-fila"><span>CECMED (Cuba)</span><span class="valor-fila">6/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="100"></div></div></div>
-      <div class="fila-barra"><div class="etiqueta-fila"><span>EMA (Unión Europea)</span><span class="valor-fila">6/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="100"></div></div></div>
-      <div class="fila-barra"><div class="etiqueta-fila"><span>OMS/OPS</span><span class="valor-fila">6/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="100"></div></div></div>
-      <div class="fila-barra"><div class="etiqueta-fila"><span>ICH</span><span class="valor-fila">6/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="100"></div></div></div>
-      <div class="fila-barra"><div class="etiqueta-fila"><span>FDA (Estados Unidos)</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>CECMED (Cuba)</span><span class="valor-fila">7/7</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="100"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>EMA (Unión Europea)</span><span class="valor-fila">7/7</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="100"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>OMS/OPS</span><span class="valor-fila">7/7</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="100"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>ICH</span><span class="valor-fila">7/7</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="100"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>FDA (Estados Unidos)</span><span class="valor-fila">5/7</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="71"></div></div></div>
     </div>
-    <p class="pie-diapositiva">5 de 6 además quieren cobertura geográfica global, sin restricción</p>
+    <p class="pie-diapositiva">6 de 7 quieren cobertura geográfica global, sin restricción</p>
   </section>
 
   <!-- 5. Rigor y confianza -->
@@ -344,72 +357,70 @@ blockquote.cita {
     <div class="kicker">La condición innegociable</div>
     <h2 class="titulo">Rigor antes que velocidad</h2>
     <div class="grid-stats">
-      <div class="tarjeta-stat"><div class="numero">6/6</div><div class="etiqueta">exigen que siempre cite la norma o fuente exacta</div></div>
-      <div class="tarjeta-stat"><div class="numero acento">4.6<span style="font-size:1.4rem">/5</span></div><div class="etiqueta">gravedad promedio asignada a una respuesta incorrecta sin advertirlo</div></div>
-      <div class="tarjeta-stat"><div class="numero">5/6</div><div class="etiqueta">exigen que admita explícitamente cuándo la norma es ambigua</div></div>
+      <div class="tarjeta-stat"><div class="numero">7/7</div><div class="etiqueta">exige que siempre cite la norma o fuente exacta</div></div>
+      <div class="tarjeta-stat"><div class="numero acento">4.7<span style="font-size:1.6rem">/5</span></div><div class="etiqueta">gravedad promedio de una respuesta incorrecta sin advertirlo</div></div>
+      <div class="tarjeta-stat"><div class="numero">6/7</div><div class="etiqueta">exige que admita cuándo la norma es ambigua</div></div>
     </div>
   </section>
 
   <!-- 6. Funciones más deseadas -->
   <section class="diapositiva">
     <div class="kicker">Qué debería hacer</div>
-    <h2 class="titulo">Diez funciones con el mismo nivel de prioridad</h2>
+    <h2 class="titulo">Diez funciones, el mismo nivel de prioridad</h2>
     <div class="lista-barras">
-      <div class="fila-barra"><div class="etiqueta-fila"><span>Responder con cita exacta de la norma</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
-      <div class="fila-barra"><div class="etiqueta-fila"><span>Vigilancia proactiva de cambios normativos</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
-      <div class="fila-barra"><div class="etiqueta-fila"><span>Redactar y revisar documentos regulatorios</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
-      <div class="fila-barra"><div class="etiqueta-fila"><span>Análisis de brechas frente a una norma</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
-      <div class="fila-barra"><div class="etiqueta-fila"><span>Comparar exigencias entre agencias</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
-      <div class="fila-barra"><div class="etiqueta-fila"><span>Simular una inspección o auditoría</span><span class="valor-fila">5/6</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="83"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>Responder con cita exacta de la norma</span><span class="valor-fila">6/7</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="86"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>Vigilancia proactiva de cambios normativos</span><span class="valor-fila">6/7</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="86"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>Redactar y revisar documentos regulatorios</span><span class="valor-fila">6/7</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="86"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>Análisis de brechas frente a una norma</span><span class="valor-fila">6/7</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="86"></div></div></div>
+      <div class="fila-barra"><div class="etiqueta-fila"><span>Comparar exigencias entre agencias</span><span class="valor-fila">6/7</span></div><div class="pista-barra"><div class="relleno-barra" data-valor="86"></div></div></div>
     </div>
-    <p class="pie-diapositiva">También con 5/6: tutoría, clasificación de riesgo, farmacovigilancia y rastreo bibliográfico</p>
+    <p class="pie-diapositiva">También con 6/7: auditoría simulada, tutoría, riesgo, farmacovigilancia y bibliografía</p>
   </section>
 
   <!-- 7. Cómo lo quieren usar -->
   <section class="diapositiva">
     <div class="kicker">Cómo lo imaginan</div>
-    <h2 class="titulo">Conversación, alertas y algo que puedan llevar en el bolsillo</h2>
+    <h2 class="titulo">Conversación, alertas y el bolsillo</h2>
     <div class="chip-fila">
-      <div class="chip">💬 <strong>5/6</strong> — conversación en lenguaje natural</div>
-      <div class="chip">🔔 <strong>5/6</strong> — notificaciones y alertas automáticas</div>
-      <div class="chip">📄 <strong>5/6</strong> — informes descargables</div>
-      <div class="chip">🔗 <strong>4/6</strong> — integración con correo y Word</div>
-      <div class="chip">💻 <strong>6/6</strong> — computadora</div>
-      <div class="chip">📱 <strong>5/6</strong> — teléfono móvil</div>
+      <div class="chip">💬 <strong>6/7</strong> conversación natural</div>
+      <div class="chip">🔔 <strong>6/7</strong> alertas automáticas</div>
+      <div class="chip">📄 <strong>5/7</strong> informes descargables</div>
+      <div class="chip">💻 <strong>7/7</strong> computadora</div>
+      <div class="chip">📱 <strong>6/7</strong> teléfono móvil</div>
     </div>
   </section>
 
   <!-- 8. Confidencialidad / arquitectura -->
   <section class="diapositiva">
     <div class="kicker">Un hallazgo que condiciona la arquitectura</div>
-    <h2 class="titulo">La mitad exige que nada salga del control del instituto</h2>
-    <div class="grid-stats" style="max-width:38rem; grid-template-columns:repeat(2,1fr)">
-      <div class="tarjeta-stat"><div class="numero acento">3/6</div><div class="etiqueta">«nunca debe salir información confidencial fuera de nuestro control»</div></div>
-      <div class="tarjeta-stat"><div class="numero">3/6</div><div class="etiqueta">acepta servicios externos seguros, o pide orientación para decidir</div></div>
+    <h2 class="titulo">Más de la mitad exige que nada salga del instituto</h2>
+    <div class="grid-stats" style="max-width:40rem; grid-template-columns:repeat(2,1fr)">
+      <div class="tarjeta-stat"><div class="numero acento">4/7</div><div class="etiqueta">nada de información confidencial fuera de nuestro control</div></div>
+      <div class="tarjeta-stat"><div class="numero">3/7</div><div class="etiqueta">acepta servicios externos seguros, o pide orientación</div></div>
     </div>
-    <p class="subtitulo" style="margin-top:1.6rem">Esto refuerza evaluar opciones con modelos locales (con salida controlada a internet para actualizarse) junto a las basadas en la nube, no una u otra por defecto.</p>
+    <p class="subtitulo" style="margin-top:1.8rem">Favorece evaluar modelos locales junto a los de nube, no uno por defecto.</p>
   </section>
 
   <!-- 9. Voz destacada: Lila -->
   <section class="diapositiva">
     <div class="kicker">Una voz que fue más allá de las casillas</div>
     <blockquote class="cita">
-      «Monitorear publicaciones, resumir y analizar los documentos que yo seleccione, clasificarlos por carpetas, avisarme cuando exista una nueva versión y elaborar resúmenes que integren varios documentos, detectando diferencias y cambios entre versiones.»
+      «Monitorear, resumir y clasificar los documentos que yo seleccione, avisarme de nuevas versiones y detectar diferencias entre ellas.»
     </blockquote>
-    <p class="cita-autor">— Lila Castellanos Serra, Asesora IFV, +30 años de experiencia</p>
-    <p class="subtitulo" style="margin-top:1rem">En vez de marcar las opciones predefinidas, describió su propio flujo de trabajo documental. Una perspectiva valiosa que las demás respuestas no capturan por sí solas.</p>
+    <p class="cita-autor">— Lila Castellanos Serra, Asesora IFV, +30 años</p>
+    <p class="subtitulo" style="margin-top:1.1rem">Describió su propio flujo documental en vez de marcar casillas — una perspectiva que las demás respuestas no capturan.</p>
   </section>
 
   <!-- 10. Lo que no debe ser -->
   <section class="diapositiva">
     <div class="kicker">El límite que todos marcan</div>
     <h2 class="titulo">Apoyo, no reemplazo del experto humano</h2>
-    <blockquote class="cita" style="font-size:1.15rem">
-      «Que en estos momentos sustituya al experto — aún no se ha llegado a ese momento, por lo que la validación del experto es innegociable.»
+    <blockquote class="cita" style="font-size:1.4rem">
+      «Que sustituya al experto — aún no se ha llegado a ese momento; su validación es innegociable.»
     </blockquote>
     <p class="cita-autor">— Ricardo Leal Dávila</p>
-    <div class="grid-stats" style="max-width:30rem; grid-template-columns:1fr; margin-top:1.6rem">
-      <div class="tarjeta-stat"><div class="numero">5/6</div><div class="etiqueta">preferiría que funcione como apoyo o borrador que una persona siempre revisa, o según el caso — nadie lo quiere como fuente autorizada única</div></div>
+    <div class="grid-stats" style="max-width:32rem; grid-template-columns:1fr; margin-top:1.8rem">
+      <div class="tarjeta-stat"><div class="numero">0/7</div><div class="etiqueta">lo quiere como fuente autorizada única, sin revisión humana</div></div>
     </div>
   </section>
 
@@ -417,12 +428,12 @@ blockquote.cita {
   <section class="diapositiva">
     <div class="kicker">Qué sigue</div>
     <h2 class="titulo">De los requisitos al diseño de la herramienta</h2>
-    <div class="lista-barras" style="max-width:40rem">
+    <div class="lista-barras" style="max-width:42rem">
       <div class="chip-fila" style="justify-content:flex-start; text-align:left">
-        <div class="chip">📂 Las 6 respuestas completas están en <strong>/respuestas</strong></div>
-        <div class="chip">🧭 El formulario sigue abierto para sumar más voces del equipo</div>
-        <div class="chip">🛠️ Con el panel de administración ya se pueden crear nuevas encuestas</div>
-        <div class="chip">🚀 Siguiente paso: diseño, implementación y validación intensiva del experto regulatorio</div>
+        <div class="chip">📂 Respuestas completas en <strong>/respuestas</strong></div>
+        <div class="chip">🧭 El formulario sigue abierto</div>
+        <div class="chip">🛠️ El panel de administración ya crea nuevas encuestas</div>
+        <div class="chip">🚀 Siguiente: diseño y validación del experto regulatorio</div>
       </div>
     </div>
   </section>
@@ -430,7 +441,7 @@ blockquote.cita {
   <!-- 12. Cierre -->
   <section class="diapositiva">
     <div class="kicker">Gracias</div>
-    <h1 class="titulo-portada" style="font-size:clamp(2rem,5vw,3.4rem)">Construyamos esto juntos</h1>
+    <h1 class="titulo-portada" style="font-size:clamp(2.4rem,5.5vw,3.8rem)">Construyamos esto juntos</h1>
     <p class="subtitulo">Instituto Finlay de Vacunas — Proyecto de Inteligencia Artificial</p>
   </section>
 
@@ -454,6 +465,8 @@ blockquote.cita {
   const botonAnterior = document.getElementById("boton-anterior");
   const botonSiguiente = document.getElementById("boton-siguiente");
   const botonPantallaCompleta = document.getElementById("boton-pantalla-completa");
+  const botonTema = document.getElementById("boton-tema");
+  const CLAVE_TEMA = "iatools-slides:tema";
 
   function animarBarras(diapositiva) {
     diapositiva.querySelectorAll(".relleno-barra").forEach((barra) => {
@@ -510,6 +523,26 @@ blockquote.cita {
   document.addEventListener("fullscreenchange", () => {
     botonPantallaCompleta.textContent = document.fullscreenElement ? "⛶ Salir de pantalla completa" : "⛶ Pantalla completa";
   });
+
+  function aplicarTema(tema) {
+    if (tema === "claro") {
+      document.documentElement.setAttribute("data-tema", "claro");
+      botonTema.textContent = "🌙 Modo oscuro";
+    } else {
+      document.documentElement.removeAttribute("data-tema");
+      botonTema.textContent = "☀️ Modo claro";
+    }
+  }
+  function alternarTema() {
+    const actualEsClaro = document.documentElement.getAttribute("data-tema") === "claro";
+    const nuevo = actualEsClaro ? "oscuro" : "claro";
+    try { localStorage.setItem(CLAVE_TEMA, nuevo); } catch (e) { /* almacenamiento no disponible */ }
+    aplicarTema(nuevo);
+  }
+  botonTema.addEventListener("click", alternarTema);
+  let temaGuardado = null;
+  try { temaGuardado = localStorage.getItem(CLAVE_TEMA); } catch (e) { /* almacenamiento no disponible */ }
+  aplicarTema(temaGuardado);
 
   mostrar(0);
 })();
