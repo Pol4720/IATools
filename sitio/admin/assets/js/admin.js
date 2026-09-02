@@ -25,6 +25,10 @@
     editando: null, // slug en edición, o null si es una encuesta nueva
     preguntasSha: null,
     cacheMotor: null, // { css, i18n, app }
+    seccionesEditando: [], // estructura editable en memoria (nunca se muestra como JSON)
+    expandido: new Set(), // secciones/campos actualmente desplegados (por referencia de objeto)
+    idAutoGenerado: new WeakSet(), // secciones/campos cuyo id se sigue derivando del título mientras no se edite a mano
+    valorAutoGenerado: new WeakSet(), // opciones cuyo valor se sigue derivando del texto en español
   };
 
   // ---------------------------------------------------------------
@@ -363,39 +367,62 @@ ${cuerpoHtmlEncuesta()}
   // Editor
   // ---------------------------------------------------------------
 
-  const SNIPPETS = {
-    seccion: {
-      id: "nueva_seccion", icono: "📋",
-      titulo_es: "Título de la sección", titulo_en: "Section title",
-      descripcion_es: "Descripción breve.", descripcion_en: "Short description.",
-      campos: [],
-    },
-    texto: { id: "campo_texto", tipo: "texto", requerido: false, etiqueta_es: "Etiqueta", etiqueta_en: "Label" },
-    parrafo: { id: "campo_parrafo", tipo: "parrafo", requerido: false, etiqueta_es: "Etiqueta", etiqueta_en: "Label" },
-    unica: {
-      id: "campo_unica", tipo: "unica", requerido: false, etiqueta_es: "Etiqueta", etiqueta_en: "Label",
-      opciones: [{ valor: "opcion_1", es: "Opción 1", en: "Option 1" }, { valor: "opcion_2", es: "Opción 2", en: "Option 2" }],
-    },
-    multiple: {
-      id: "campo_multiple", tipo: "multiple", requerido: false, permite_otro: true, etiqueta_es: "Etiqueta", etiqueta_en: "Label",
-      opciones: [{ valor: "opcion_1", es: "Opción 1", en: "Option 1" }, { valor: "opcion_2", es: "Opción 2", en: "Option 2" }],
-    },
-    escala: {
-      id: "campo_escala", tipo: "escala", requerido: false, escala_min: 1, escala_max: 5,
-      etiqueta_es: "Etiqueta", etiqueta_en: "Label",
-      etiqueta_min_es: "Mínimo", etiqueta_min_en: "Minimum", etiqueta_max_es: "Máximo", etiqueta_max_en: "Maximum",
-    },
+  // Plantillas para preguntas nuevas, según el tipo elegido con los botones
+  // "Añadir pregunta". El id/valor internos se autogeneran a partir del
+  // texto en español y solo dejan de seguirlo si alguien los edita a mano
+  // (ver ed-avanzado en el HTML generado).
+  const ETIQUETAS_TIPO = {
+    texto: "🔤 Texto corto",
+    parrafo: "📝 Párrafo",
+    unica: "🔘 Opción única",
+    multiple: "☑️ Opción múltiple",
+    escala: "📊 Escala",
   };
+  const PLANTILLA_CAMPO = {
+    texto: () => ({ tipo: "texto", requerido: false, etiqueta_es: "", etiqueta_en: "" }),
+    parrafo: () => ({ tipo: "parrafo", requerido: false, etiqueta_es: "", etiqueta_en: "" }),
+    unica: () => ({ tipo: "unica", requerido: false, etiqueta_es: "", etiqueta_en: "", opciones: [nuevaOpcion(), nuevaOpcion()] }),
+    multiple: () => ({ tipo: "multiple", requerido: false, permite_otro: false, etiqueta_es: "", etiqueta_en: "", opciones: [nuevaOpcion(), nuevaOpcion()] }),
+    escala: () => ({
+      tipo: "escala", requerido: false, etiqueta_es: "", etiqueta_en: "", escala_min: 1, escala_max: 5,
+      etiqueta_min_es: "Mínimo", etiqueta_min_en: "Minimum", etiqueta_max_es: "Máximo", etiqueta_max_en: "Maximum",
+    }),
+  };
+
+  function nuevaOpcion() { return { valor: "", es: "", en: "" }; }
+  function nuevaSeccion() { return { icono: "📋", titulo_es: "", titulo_en: "", descripcion_es: "", descripcion_en: "", campos: [] }; }
+
+  function aSlug(texto, maxLen) {
+    return (texto || "")
+      .toLowerCase()
+      .normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9]+/g, "_")
+      .replace(/^_+|_+$/g, "")
+      .slice(0, maxLen || 40);
+  }
+  function idUnico(base, existentes) {
+    let candidato = base || "elemento";
+    let n = 2;
+    while (existentes.has(candidato)) { candidato = `${base}_${n}`; n++; }
+    return candidato;
+  }
+  function idsExistentes(lista, excluirObjeto) {
+    return new Set(lista.filter((o) => o !== excluirObjeto).map((o) => o.id));
+  }
+  function todosLosCampos(secciones) { return secciones.flatMap((s) => s.campos); }
 
   function limpiarEditor() {
     ["editor-slug", "editor-titulo-es", "editor-titulo-en", "editor-descripcion-es", "editor-descripcion-en",
       "editor-correo", "editor-intro-es", "editor-intro-en"].forEach((id) => { el(id).value = ""; });
     el("editor-icono").value = "📋";
     el("editor-activa").checked = true;
-    el("editor-secciones-json").value = JSON.stringify([SNIPPETS.seccion], null, 2);
-    el("editor-json-error").hidden = true;
+    el("editor-error-validacion").hidden = true;
     el("editor-guardar-estado").hidden = true;
     el("iframe-previa").srcdoc = "";
+    estado.seccionesEditando = [];
+    estado.expandido = new Set();
+    estado.idAutoGenerado = new WeakSet();
+    estado.valorAutoGenerado = new WeakSet();
   }
 
   async function abrirEditor(slug) {
@@ -421,11 +448,20 @@ ${cuerpoHtmlEncuesta()}
       el("editor-activa").checked = registroEnc.activa !== false;
       el("editor-intro-es").value = (datos.meta.introduccion_es || []).join("\n");
       el("editor-intro-en").value = (datos.meta.introduccion_en || []).join("\n");
-      el("editor-secciones-json").value = JSON.stringify(datos.secciones || [], null, 2);
+      // Los id/valor ya existentes son significativos (pueden estar
+      // referenciados por respuestas ya recibidas) y nunca se autogeneran
+      // solos; solo cambian si alguien los edita a mano en "Avanzado".
+      estado.seccionesEditando = datos.secciones || [];
     } else {
       estado.preguntasSha = null;
+      const inicial = nuevaSeccion();
+      inicial.id = idUnico("seccion", new Set());
+      estado.idAutoGenerado.add(inicial);
+      estado.seccionesEditando = [inicial];
+      estado.expandido.add(inicial);
     }
 
+    renderEditorSecciones();
     el("pantalla-listado").hidden = true;
     el("pantalla-editor").hidden = false;
   }
@@ -436,67 +472,353 @@ ${cuerpoHtmlEncuesta()}
     renderListado();
   }
 
-  function insertarSnippet(clave) {
-    const area = el("editor-secciones-json");
-    let valor;
-    try {
-      valor = JSON.parse(area.value || "[]");
-    } catch (err) {
-      alert("Corrija primero el JSON actual (tiene un error de sintaxis) antes de insertar una plantilla.");
-      return;
-    }
-    if (clave === "seccion") {
-      valor.push(JSON.parse(JSON.stringify(SNIPPETS.seccion)));
-    } else {
-      if (valor.length === 0) valor.push(JSON.parse(JSON.stringify(SNIPPETS.seccion)));
-      valor[valor.length - 1].campos.push(JSON.parse(JSON.stringify(SNIPPETS[clave])));
-    }
-    area.value = JSON.stringify(valor, null, 2);
+  // ---------------------------------------------------------------
+  // Constructor visual de secciones y preguntas
+  // ---------------------------------------------------------------
+
+  function renderEditorSecciones() {
+    const contenedor = el("ed-secciones");
+    const secciones = estado.seccionesEditando;
+    contenedor.innerHTML = secciones.length === 0
+      ? '<p class="ed-vacio">Todavía no hay secciones. Empiece con «+ Añadir sección».</p>'
+      : secciones.map((s, i) => renderSeccionHTML(s, i, secciones.length)).join("");
+
+    const totalCampos = todosLosCampos(secciones).length;
+    el("ed-resumen").textContent = `${secciones.length} sección${secciones.length === 1 ? "" : "es"} · ${totalCampos} pregunta${totalCampos === 1 ? "" : "s"}`;
+    programarActualizacionPrevia();
   }
 
-  const TIPOS_VALIDOS = new Set(["texto", "parrafo", "unica", "multiple", "escala"]);
+  function renderSeccionHTML(seccion, iSeccion, totalSecciones) {
+    const expandida = estado.expandido.has(seccion);
+    const numCampos = seccion.campos.length;
+    return `
+    <div class="ed-seccion" data-seccion-index="${iSeccion}">
+      <div class="ed-seccion-cabecera">
+        <button type="button" class="ed-toggle" data-accion="alternar-seccion" aria-expanded="${expandida}" aria-label="Expandir o contraer sección">▾</button>
+        <input type="text" class="ed-icono-input" data-bind="icono" value="${escaparHtml(seccion.icono || "")}" maxlength="4" title="Icono (un emoji)">
+        <input type="text" class="ed-titulo-input" data-bind="titulo_es" placeholder="Título de la sección (ES)" value="${escaparHtml(seccion.titulo_es || "")}">
+        <input type="text" class="ed-titulo-input ed-en" data-bind="titulo_en" placeholder="Title (EN)" value="${escaparHtml(seccion.titulo_en || "")}">
+        <span class="ed-contador-campos">${numCampos} pregunta${numCampos === 1 ? "" : "s"}</span>
+        <div class="ed-acciones-fila">
+          <button type="button" class="ed-boton-icono" data-accion="mover-seccion-arriba" ${iSeccion === 0 ? "disabled" : ""} title="Subir sección" aria-label="Subir sección">↑</button>
+          <button type="button" class="ed-boton-icono" data-accion="mover-seccion-abajo" ${iSeccion === totalSecciones - 1 ? "disabled" : ""} title="Bajar sección" aria-label="Bajar sección">↓</button>
+          <button type="button" class="ed-boton-icono ed-boton-peligro" data-accion="eliminar-seccion" title="Eliminar sección" aria-label="Eliminar sección">🗑</button>
+        </div>
+      </div>
+      ${expandida ? `
+      <div class="ed-seccion-cuerpo">
+        <div class="ed-fila-doble">
+          <textarea data-bind="descripcion_es" placeholder="Descripción breve (ES, opcional)">${escaparHtml(seccion.descripcion_es || "")}</textarea>
+          <textarea data-bind="descripcion_en" placeholder="Short description (EN, optional)">${escaparHtml(seccion.descripcion_en || "")}</textarea>
+        </div>
+        <div class="ed-campos-lista">
+          ${seccion.campos.map((c, iC) => renderCampoHTML(c, iC, seccion.campos.length)).join("") || '<p class="ed-vacio">Sin preguntas todavía.</p>'}
+        </div>
+        <div class="ed-anadir-campo">
+          <span>Añadir pregunta:</span>
+          ${Object.keys(ETIQUETAS_TIPO).map((tipo) => `<button type="button" class="boton boton-secundario" data-accion="anadir-campo" data-tipo="${tipo}">${ETIQUETAS_TIPO[tipo]}</button>`).join("")}
+        </div>
+      </div>` : ""}
+    </div>`;
+  }
+
+  function renderCampoHTML(campo, iCampo, totalCampos) {
+    const expandido = estado.expandido.has(campo);
+    let cuerpo = "";
+    if (expandido) {
+      cuerpo += `
+        <input type="text" data-bind="etiqueta_en" placeholder="Question (EN)" value="${escaparHtml(campo.etiqueta_en || "")}" style="margin-bottom:0.7rem">
+        <div class="ed-fila-doble">
+          <input type="text" data-bind="ayuda_es" placeholder="Ayuda o pista (ES, opcional)" value="${escaparHtml(campo.ayuda_es || "")}">
+          <input type="text" data-bind="ayuda_en" placeholder="Hint (EN, optional)" value="${escaparHtml(campo.ayuda_en || "")}">
+        </div>`;
+      if (campo.tipo === "texto") {
+        cuerpo += `
+        <div class="ed-fila-doble">
+          <input type="text" data-bind="placeholder_es" placeholder="Texto de ejemplo dentro del campo (ES, opcional)" value="${escaparHtml(campo.placeholder_es || "")}">
+          <input type="text" data-bind="placeholder_en" placeholder="Example text inside the field (EN, optional)" value="${escaparHtml(campo.placeholder_en || "")}">
+        </div>`;
+      }
+      if (campo.tipo === "parrafo") {
+        cuerpo += `
+        <div class="ed-casillas-fila">
+          <label><input type="checkbox" data-bind="grande" ${campo.grande ? "checked" : ""}> Caja de texto grande</label>
+          <label><input type="checkbox" data-bind="destacado" ${campo.destacado ? "checked" : ""}> Destacar visualmente</label>
+        </div>`;
+      }
+      if (campo.tipo === "unica" || campo.tipo === "multiple") {
+        cuerpo += `<div class="ed-opciones-lista">${(campo.opciones || []).map((op, iOp) => renderOpcionHTML(op, iOp, campo.opciones.length)).join("")}</div>`;
+        cuerpo += `<button type="button" class="boton boton-secundario" data-accion="anadir-opcion">+ Añadir opción</button>`;
+        cuerpo += `<div class="ed-casillas-fila" style="margin-top:0.7rem"><label><input type="checkbox" data-bind="permite_otro" ${campo.permite_otro ? "checked" : ""}> Permitir opción «Otro» con texto libre</label></div>`;
+      }
+      if (campo.tipo === "escala") {
+        cuerpo += `
+        <div class="ed-escala-config">
+          <div class="ed-campo-mini">Mínimo<input type="number" data-bind="escala_min" value="${campo.escala_min ?? 1}"></div>
+          <div class="ed-campo-mini">Máximo<input type="number" data-bind="escala_max" value="${campo.escala_max ?? 5}"></div>
+          <input type="text" data-bind="etiqueta_min_es" placeholder="Etiqueta del mínimo (ES)" value="${escaparHtml(campo.etiqueta_min_es || "")}">
+          <input type="text" data-bind="etiqueta_min_en" placeholder="Min label (EN)" value="${escaparHtml(campo.etiqueta_min_en || "")}">
+          <input type="text" data-bind="etiqueta_max_es" placeholder="Etiqueta del máximo (ES)" value="${escaparHtml(campo.etiqueta_max_es || "")}">
+          <input type="text" data-bind="etiqueta_max_en" placeholder="Max label (EN)" value="${escaparHtml(campo.etiqueta_max_en || "")}">
+        </div>`;
+      }
+      cuerpo += `
+        <details class="ed-avanzado">
+          <summary>Avanzado</summary>
+          <div class="ed-avanzado-cuerpo"><span>ID interno:</span><input type="text" data-bind="id" value="${escaparHtml(campo.id || "")}"></div>
+        </details>`;
+    }
+    return `
+    <div class="ed-campo" data-campo-index="${iCampo}">
+      <div class="ed-campo-cabecera">
+        <button type="button" class="ed-toggle" data-accion="alternar-campo" aria-expanded="${expandido}" aria-label="Expandir o contraer pregunta">▾</button>
+        <span class="ed-campo-tipo-badge">${ETIQUETAS_TIPO[campo.tipo] || campo.tipo}</span>
+        <input type="text" class="ed-campo-etiqueta-resumen" data-bind="etiqueta_es" placeholder="Pregunta (ES)" value="${escaparHtml(campo.etiqueta_es || "")}">
+        <div class="ed-acciones-fila">
+          <button type="button" class="ed-boton-icono" data-accion="mover-campo-arriba" ${iCampo === 0 ? "disabled" : ""} title="Subir pregunta" aria-label="Subir pregunta">↑</button>
+          <button type="button" class="ed-boton-icono" data-accion="mover-campo-abajo" ${iCampo === totalCampos - 1 ? "disabled" : ""} title="Bajar pregunta" aria-label="Bajar pregunta">↓</button>
+          <button type="button" class="ed-boton-icono ed-boton-peligro" data-accion="eliminar-campo" title="Eliminar pregunta" aria-label="Eliminar pregunta">🗑</button>
+        </div>
+      </div>
+      ${expandido ? `<div class="ed-campo-cuerpo">${cuerpo}</div>` : ""}
+    </div>`;
+  }
+
+  function renderOpcionHTML(opcion, iOpcion, total) {
+    return `
+    <div class="ed-opcion" data-opcion-index="${iOpcion}">
+      <input type="text" data-bind="es" placeholder="Opción (ES)" value="${escaparHtml(opcion.es || "")}">
+      <input type="text" class="ed-opcion-en" data-bind="en" placeholder="Option (EN)" value="${escaparHtml(opcion.en || "")}">
+      <button type="button" class="ed-boton-icono" data-accion="mover-opcion-arriba" ${iOpcion === 0 ? "disabled" : ""} title="Subir opción" aria-label="Subir opción">↑</button>
+      <button type="button" class="ed-boton-icono" data-accion="mover-opcion-abajo" ${iOpcion === total - 1 ? "disabled" : ""} title="Bajar opción" aria-label="Bajar opción">↓</button>
+      <button type="button" class="ed-boton-icono ed-boton-peligro" data-accion="eliminar-opcion" title="Eliminar opción" aria-label="Eliminar opción">🗑</button>
+    </div>`;
+  }
+
+  function indicesDesdeElemento(nodo) {
+    const nodoOpcion = nodo.closest(".ed-opcion");
+    const nodoCampo = nodo.closest(".ed-campo");
+    const nodoSeccion = nodo.closest(".ed-seccion");
+    return {
+      iSeccion: nodoSeccion ? Number(nodoSeccion.dataset.seccionIndex) : -1,
+      iCampo: nodoCampo ? Number(nodoCampo.dataset.campoIndex) : -1,
+      iOpcion: nodoOpcion ? Number(nodoOpcion.dataset.opcionIndex) : -1,
+    };
+  }
+  function objetoDesdeIndices(iSeccion, iCampo, iOpcion) {
+    const seccion = estado.seccionesEditando[iSeccion];
+    if (iCampo < 0) return seccion;
+    const campo = seccion.campos[iCampo];
+    if (iOpcion < 0) return campo;
+    return campo.opciones[iOpcion];
+  }
+
+  let temporizadorPrevia = null;
+  function programarActualizacionPrevia() {
+    if (temporizadorPrevia) clearTimeout(temporizadorPrevia);
+    temporizadorPrevia = setTimeout(actualizarPrevia, 400);
+  }
+
+  function manejarEntradaEditor(evento) {
+    const bind = evento.target.dataset.bind;
+    if (!bind) return;
+    const { iSeccion, iCampo, iOpcion } = indicesDesdeElemento(evento.target);
+    if (iSeccion < 0) return;
+    const objetivo = objetoDesdeIndices(iSeccion, iCampo, iOpcion);
+
+    let valor = evento.target.value;
+    if (evento.target.type === "checkbox") valor = evento.target.checked;
+    else if (evento.target.type === "number") valor = valor === "" ? "" : Number(valor);
+
+    if (bind === "id") { estado.idAutoGenerado.delete(objetivo); objetivo.id = valor; programarActualizacionPrevia(); return; }
+    if (bind === "valor") { estado.valorAutoGenerado.delete(objetivo); objetivo.valor = valor; programarActualizacionPrevia(); return; }
+
+    objetivo[bind] = valor;
+
+    if (bind === "titulo_es" && iCampo < 0 && estado.idAutoGenerado.has(objetivo)) {
+      objetivo.id = idUnico(aSlug(valor) || "seccion", idsExistentes(estado.seccionesEditando, objetivo));
+    }
+    if (bind === "etiqueta_es" && iCampo >= 0 && iOpcion < 0 && estado.idAutoGenerado.has(objetivo)) {
+      objetivo.id = idUnico(aSlug(valor) || "campo", idsExistentes(todosLosCampos(estado.seccionesEditando), objetivo));
+      // El campo "ID interno" vive dentro de <details class="ed-avanzado">
+      // del mismo <div class="ed-campo">: no hay un re-render completo tras
+      // cada tecleo (perdería el foco), así que hay que reflejar el id
+      // recién calculado a mano si ese input ya está en pantalla.
+      const nodoCampo = evento.target.closest(".ed-campo");
+      const inputId = nodoCampo && nodoCampo.querySelector('[data-bind="id"]');
+      if (inputId) inputId.value = objetivo.id;
+    }
+    if (bind === "es" && iOpcion >= 0 && estado.valorAutoGenerado.has(objetivo)) {
+      const campo = objetoDesdeIndices(iSeccion, iCampo, -1);
+      objetivo.valor = idUnico(aSlug(valor) || "opcion", new Set(campo.opciones.filter((o) => o !== objetivo).map((o) => o.valor)));
+    }
+    // Los campos de texto no fuerzan un re-render (perdería el foco/cursor);
+    // solo la vista previa se refresca, con un pequeño retraso.
+    programarActualizacionPrevia();
+  }
+
+  function alternarExpandido(objeto) {
+    if (estado.expandido.has(objeto)) estado.expandido.delete(objeto); else estado.expandido.add(objeto);
+  }
+  function moverElemento(lista, indice, delta) {
+    const nuevo = indice + delta;
+    if (nuevo < 0 || nuevo >= lista.length) return;
+    [lista[indice], lista[nuevo]] = [lista[nuevo], lista[indice]];
+  }
+
+  function manejarClicEditor(evento) {
+    const boton = evento.target.closest("[data-accion]");
+    if (!boton) return;
+    const accion = boton.dataset.accion;
+    const { iSeccion, iCampo } = indicesDesdeElemento(boton);
+    let enfocarUltimoCampoDe = -1;
+    let enfocarUltimaOpcionDe = null;
+
+    switch (accion) {
+      case "alternar-seccion":
+        alternarExpandido(estado.seccionesEditando[iSeccion]);
+        break;
+      case "mover-seccion-arriba":
+        moverElemento(estado.seccionesEditando, iSeccion, -1);
+        break;
+      case "mover-seccion-abajo":
+        moverElemento(estado.seccionesEditando, iSeccion, 1);
+        break;
+      case "eliminar-seccion": {
+        const seccion = estado.seccionesEditando[iSeccion];
+        const nombre = seccion.titulo_es || `sección ${iSeccion + 1}`;
+        if (!confirm(`¿Eliminar «${nombre}» y sus ${seccion.campos.length} pregunta(s)? No se puede deshacer.`)) return;
+        estado.seccionesEditando.splice(iSeccion, 1);
+        break;
+      }
+      case "anadir-campo": {
+        const tipo = boton.dataset.tipo;
+        const nuevo = PLANTILLA_CAMPO[tipo]();
+        nuevo.id = idUnico(tipo, idsExistentes(todosLosCampos(estado.seccionesEditando), null));
+        estado.idAutoGenerado.add(nuevo);
+        if (nuevo.opciones) nuevo.opciones.forEach((o) => estado.valorAutoGenerado.add(o));
+        estado.seccionesEditando[iSeccion].campos.push(nuevo);
+        estado.expandido.add(nuevo);
+        enfocarUltimoCampoDe = iSeccion;
+        break;
+      }
+      case "alternar-campo":
+        alternarExpandido(estado.seccionesEditando[iSeccion].campos[iCampo]);
+        break;
+      case "mover-campo-arriba":
+        moverElemento(estado.seccionesEditando[iSeccion].campos, iCampo, -1);
+        break;
+      case "mover-campo-abajo":
+        moverElemento(estado.seccionesEditando[iSeccion].campos, iCampo, 1);
+        break;
+      case "eliminar-campo": {
+        const campos = estado.seccionesEditando[iSeccion].campos;
+        const campo = campos[iCampo];
+        if (!confirm(`¿Eliminar la pregunta «${campo.etiqueta_es || "sin título"}»? No se puede deshacer.`)) return;
+        campos.splice(iCampo, 1);
+        break;
+      }
+      case "anadir-opcion": {
+        const nueva = nuevaOpcion();
+        estado.valorAutoGenerado.add(nueva);
+        estado.seccionesEditando[iSeccion].campos[iCampo].opciones.push(nueva);
+        enfocarUltimaOpcionDe = { iSeccion, iCampo };
+        break;
+      }
+      case "mover-opcion-arriba":
+        moverElemento(estado.seccionesEditando[iSeccion].campos[iCampo].opciones, indicesDesdeElemento(boton).iOpcion, -1);
+        break;
+      case "mover-opcion-abajo":
+        moverElemento(estado.seccionesEditando[iSeccion].campos[iCampo].opciones, indicesDesdeElemento(boton).iOpcion, 1);
+        break;
+      case "eliminar-opcion": {
+        const opciones = estado.seccionesEditando[iSeccion].campos[iCampo].opciones;
+        if (opciones.length <= 1) { alert("Debe quedar al menos una opción."); return; }
+        opciones.splice(indicesDesdeElemento(boton).iOpcion, 1);
+        break;
+      }
+      default:
+        return;
+    }
+
+    renderEditorSecciones();
+
+    if (enfocarUltimoCampoDe >= 0) {
+      requestAnimationFrame(() => {
+        const nodosSeccion = document.querySelectorAll(".ed-seccion");
+        const nodoSeccion = nodosSeccion[enfocarUltimoCampoDe];
+        const nodosCampo = nodoSeccion && nodoSeccion.querySelectorAll(".ed-campo");
+        const ultimo = nodosCampo && nodosCampo[nodosCampo.length - 1];
+        const entrada = ultimo && ultimo.querySelector('[data-bind="etiqueta_es"]');
+        if (entrada) entrada.focus();
+      });
+    }
+    if (enfocarUltimaOpcionDe) {
+      requestAnimationFrame(() => {
+        const nodosSeccion = document.querySelectorAll(".ed-seccion");
+        const nodoCampo = nodosSeccion[enfocarUltimaOpcionDe.iSeccion].querySelectorAll(".ed-campo")[enfocarUltimaOpcionDe.iCampo];
+        const nodosOpcion = nodoCampo.querySelectorAll(".ed-opcion");
+        const entrada = nodosOpcion[nodosOpcion.length - 1].querySelector('[data-bind="es"]');
+        if (entrada) entrada.focus();
+      });
+    }
+  }
+
+  function anadirSeccion() {
+    const nueva = nuevaSeccion();
+    nueva.id = idUnico("seccion", idsExistentes(estado.seccionesEditando, null));
+    estado.idAutoGenerado.add(nueva);
+    estado.seccionesEditando.push(nueva);
+    estado.expandido.add(nueva);
+    renderEditorSecciones();
+    requestAnimationFrame(() => {
+      const nodos = document.querySelectorAll(".ed-seccion");
+      const entrada = nodos[nodos.length - 1] && nodos[nodos.length - 1].querySelector('[data-bind="titulo_es"]');
+      if (entrada) entrada.focus();
+    });
+  }
 
   function validarSecciones(secciones) {
-    if (!Array.isArray(secciones)) return "La raíz debe ser una lista de secciones.";
+    if (!Array.isArray(secciones) || secciones.length === 0) return "Añada al menos una sección con «+ Añadir sección».";
     const idsSeccion = new Set();
     const idsCampo = new Set();
-    for (const seccion of secciones) {
-      if (!seccion.id || !seccion.titulo_es || !seccion.titulo_en) return `Cada sección necesita id, titulo_es y titulo_en (revise «${seccion.id || "?"}»).`;
-      if (idsSeccion.has(seccion.id)) return `El id de sección «${seccion.id}» está repetido.`;
+    for (let i = 0; i < secciones.length; i++) {
+      const seccion = secciones[i];
+      const nombreSeccion = seccion.titulo_es || `Sección ${i + 1}`;
+      if (!seccion.titulo_es || !seccion.titulo_en) return `«${nombreSeccion}»: falta el título en español o en inglés.`;
+      if (!seccion.id) return `«${nombreSeccion}»: falta el ID interno (ábralo en «Avanzado» — no debería pasar).`;
+      if (idsSeccion.has(seccion.id)) return `Dos secciones comparten el mismo ID interno («${seccion.id}»). Cambie uno en «Avanzado».`;
       idsSeccion.add(seccion.id);
-      if (!Array.isArray(seccion.campos)) return `La sección «${seccion.id}» no tiene una lista «campos».`;
-      for (const campo of seccion.campos) {
-        if (!campo.id || !campo.tipo) return `Cada campo necesita id y tipo (sección «${seccion.id}»).`;
-        if (idsCampo.has(campo.id)) return `El id de campo «${campo.id}» está repetido.`;
+      if (seccion.campos.length === 0) return `«${nombreSeccion}» todavía no tiene ninguna pregunta.`;
+      for (let j = 0; j < seccion.campos.length; j++) {
+        const campo = seccion.campos[j];
+        const nombreCampo = campo.etiqueta_es || `pregunta ${j + 1} de «${nombreSeccion}»`;
+        if (!campo.etiqueta_es || !campo.etiqueta_en) return `«${nombreCampo}»: falta el texto de la pregunta en español o en inglés.`;
+        if (!campo.id) return `«${nombreCampo}»: falta el ID interno.`;
+        if (idsCampo.has(campo.id)) return `Dos preguntas comparten el mismo ID interno («${campo.id}»). Cambie uno en «Avanzado».`;
         idsCampo.add(campo.id);
-        if (!TIPOS_VALIDOS.has(campo.tipo)) return `Tipo desconocido «${campo.tipo}» en el campo «${campo.id}» (use texto, parrafo, unica, multiple o escala).`;
-        if (!campo.etiqueta_es || !campo.etiqueta_en) return `El campo «${campo.id}» necesita etiqueta_es y etiqueta_en.`;
-        if ((campo.tipo === "unica" || campo.tipo === "multiple")) {
-          if (!Array.isArray(campo.opciones) || campo.opciones.length === 0) return `El campo «${campo.id}» necesita al menos una opción.`;
+        if (campo.tipo === "unica" || campo.tipo === "multiple") {
+          if (!campo.opciones || campo.opciones.length === 0) return `«${nombreCampo}» necesita al menos una opción.`;
+          const valoresOpcion = new Set();
           for (const op of campo.opciones) {
-            if (!op.valor || !op.es || !op.en) return `Cada opción del campo «${campo.id}» necesita valor, es y en.`;
+            if (!op.es || !op.en) return `Una opción de «${nombreCampo}» no tiene texto en español o en inglés.`;
+            if (!op.valor) return `Una opción de «${nombreCampo}» no tiene ID interno.`;
+            if (valoresOpcion.has(op.valor)) return `Dos opciones de «${nombreCampo}» comparten el mismo ID interno («${op.valor}»).`;
+            valoresOpcion.add(op.valor);
           }
         }
         if (campo.tipo === "escala") {
-          if (typeof campo.escala_min !== "number" || typeof campo.escala_max !== "number") return `El campo «${campo.id}» necesita escala_min y escala_max numéricos.`;
+          if (typeof campo.escala_min !== "number" || typeof campo.escala_max !== "number" || campo.escala_min >= campo.escala_max) {
+            return `«${nombreCampo}»: el mínimo de la escala debe ser un número menor que el máximo.`;
+          }
         }
       }
     }
     return null;
   }
 
-  function construirPreguntasDesdeEditor() {
+  function construirDatosEncuesta() {
     const slug = el("editor-slug").value.trim();
-    if (!/^[a-z0-9-]+$/.test(slug)) throw new Error("El identificador (slug) solo puede tener minúsculas, números y guiones.");
-    let secciones;
-    try {
-      secciones = JSON.parse(el("editor-secciones-json").value || "[]");
-    } catch (err) {
-      throw new Error(`El JSON de secciones tiene un error de sintaxis: ${err.message}`);
-    }
-    const errorValidacion = validarSecciones(secciones);
-    if (errorValidacion) throw new Error(errorValidacion);
-
     const datos = {
       version: "1.0.0",
       slug,
@@ -512,9 +834,16 @@ ${cuerpoHtmlEncuesta()}
         tiempo_estimado_es: "Tiempo estimado: unos minutos (puede pausar y continuar cuando quiera)",
         tiempo_estimado_en: "Estimated time: a few minutes (you may pause and resume at any time)",
       },
-      secciones,
+      secciones: estado.seccionesEditando,
     };
     return { slug, datos };
+  }
+
+  function validarAntesDeGuardar() {
+    const slug = el("editor-slug").value.trim();
+    if (!/^[a-z0-9-]+$/.test(slug)) return "El identificador (slug) solo puede tener minúsculas, números y guiones.";
+    if (!el("editor-titulo-es").value.trim() || !el("editor-titulo-en").value.trim()) return "Falta el título de la encuesta, en español o en inglés (arriba, en «Datos generales»).";
+    return validarSecciones(estado.seccionesEditando);
   }
 
   async function cargarMotorParaPrevia() {
@@ -528,37 +857,41 @@ ${cuerpoHtmlEncuesta()}
     return estado.cacheMotor;
   }
 
-  async function validarYPrevisualizar() {
-    el("editor-json-error").hidden = true;
-    let resultado;
-    try {
-      resultado = construirPreguntasDesdeEditor();
-    } catch (err) {
-      el("editor-json-error").hidden = false;
-      el("editor-json-error").textContent = err.message;
-      return null;
-    }
+  async function actualizarPrevia() {
+    // La vista previa es siempre indulgente: mientras se escribe puede
+    // haber títulos vacíos o secciones a medio completar, y aun así debe
+    // mostrar algo razonable. La validación estricta solo ocurre al
+    // guardar (validarAntesDeGuardar), nunca aquí.
+    const { slug, datos } = construirDatosEncuesta();
     const motor = await cargarMotorParaPrevia();
     const srcdoc = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><style>${motor.css}</style></head><body>${cuerpoHtmlEncuesta()}
-<script>window.CONFIG_ENCUESTA = { slug: ${jsonParaScript(resultado.slug)}, datosInline: ${jsonParaScript(resultado.datos)}, correoDestino: ${jsonParaScript(resultado.datos.correo_destino || "")} };<\/script>
+<script>window.CONFIG_ENCUESTA = { slug: ${jsonParaScript(slug)}, datosInline: ${jsonParaScript(datos)}, correoDestino: ${jsonParaScript(datos.correo_destino || "")} };<\/script>
 <script>${motor.i18n}<\/script>
 <script>${motor.app}<\/script>
 </body></html>`;
     el("iframe-previa").srcdoc = srcdoc;
-    return resultado;
   }
 
   async function guardarEncuesta() {
     const boton = el("boton-guardar-encuesta");
     const estadoTexto = el("editor-guardar-estado");
+    const errorNodo = el("editor-error-validacion");
+    errorNodo.hidden = true;
+
+    const mensajeError = validarAntesDeGuardar();
+    if (mensajeError) {
+      errorNodo.hidden = false;
+      errorNodo.textContent = mensajeError;
+      errorNodo.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
     boton.disabled = true;
     estadoTexto.hidden = false;
     estadoTexto.className = "admin-mensaje";
     estadoTexto.textContent = "Guardando…";
     try {
-      const resultado = await validarYPrevisualizar();
-      if (!resultado) { estadoTexto.hidden = true; boton.disabled = false; return; }
-      const { slug, datos } = resultado;
+      const { slug, datos } = construirDatosEncuesta();
       const esNueva = !estado.editando;
 
       if (esNueva && (estado.registro.encuestas || []).some((e) => e.slug === slug)) {
@@ -673,13 +1006,13 @@ ${cuerpoHtmlEncuesta()}
     });
     el("boton-nueva-encuesta").addEventListener("click", () => abrirEditor(null));
     el("boton-volver-listado").addEventListener("click", volverAlListado);
-    el("boton-validar-previsualizar").addEventListener("click", validarYPrevisualizar);
     el("boton-guardar-encuesta").addEventListener("click", guardarEncuesta);
     el("boton-eliminar-encuesta").addEventListener("click", eliminarEncuesta);
 
-    document.querySelectorAll("[data-snippet]").forEach((boton) => {
-      boton.addEventListener("click", () => insertarSnippet(boton.dataset.snippet));
-    });
+    el("ed-anadir-seccion").addEventListener("click", anadirSeccion);
+    el("ed-secciones").addEventListener("click", manejarClicEditor);
+    el("ed-secciones").addEventListener("input", manejarEntradaEditor);
+    el("ed-secciones").addEventListener("change", manejarEntradaEditor);
   }
 
   document.addEventListener("DOMContentLoaded", () => {

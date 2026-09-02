@@ -124,29 +124,20 @@
           </fieldset>
 
           <fieldset class="admin-fieldset">
-            <legend>Preguntas (estructura JSON de secciones y campos)</legend>
-            <p class="admin-ayuda-json">
-              Cada sección tiene <code>id</code>, <code>icono</code>, <code>titulo_es/en</code>, <code>descripcion_es/en</code>
-              y una lista de <code>campos</code>. Cada campo tiene <code>id</code>, <code>tipo</code>
-              (<code>texto</code> · <code>parrafo</code> · <code>unica</code> · <code>multiple</code> · <code>escala</code>),
-              <code>etiqueta_es/en</code>, <code>ayuda_es/en</code> (opcional) y, según el tipo,
-              <code>opciones</code> (cada una con <code>valor</code>, <code>es</code>, <code>en</code>) o
-              <code>escala_min/max</code> y <code>etiqueta_min/max_es/en</code>.
-            </p>
-            <div class="admin-botones-snippet">
-              <button type="button" class="boton boton-secundario" data-snippet="seccion">+ Insertar sección</button>
-              <button type="button" class="boton boton-secundario" data-snippet="texto">+ Campo texto</button>
-              <button type="button" class="boton boton-secundario" data-snippet="parrafo">+ Campo párrafo</button>
-              <button type="button" class="boton boton-secundario" data-snippet="unica">+ Campo opción única</button>
-              <button type="button" class="boton boton-secundario" data-snippet="multiple">+ Campo opción múltiple</button>
-              <button type="button" class="boton boton-secundario" data-snippet="escala">+ Campo escala</button>
+            <div class="ed-cabecera-preguntas">
+              <legend>Preguntas</legend>
+              <span class="ed-resumen" id="ed-resumen">0 secciones · 0 preguntas</span>
             </div>
-            <textarea id="editor-secciones-json" class="admin-json" rows="18" spellcheck="false"></textarea>
-            <p id="editor-json-error" class="admin-mensaje admin-mensaje-error" hidden></p>
+            <p class="admin-ayuda-json">
+              Cada sección agrupa varias preguntas. Use «Subir/Bajar» para reordenar y la papelera para eliminar
+              (se pide confirmación). La vista previa de la derecha se actualiza sola.
+            </p>
+            <div id="ed-secciones" class="ed-secciones"></div>
+            <button type="button" id="ed-anadir-seccion" class="boton boton-primario">+ Añadir sección</button>
+            <p id="editor-error-validacion" class="admin-mensaje admin-mensaje-error" hidden></p>
           </fieldset>
 
           <div class="admin-botones-guardar">
-            <button type="button" id="boton-validar-previsualizar" class="boton boton-secundario">Validar y previsualizar</button>
             <button type="button" id="boton-guardar-encuesta" class="boton boton-primario boton-grande">Guardar en GitHub</button>
           </div>
           <p id="editor-guardar-estado" class="admin-mensaje" role="status" hidden></p>
@@ -160,7 +151,7 @@
 
         <div class="admin-columna-previa">
           <h3>Vista previa en vivo</h3>
-          <p class="admin-ayuda-json">Pulse «Validar y previsualizar» tras cada cambio para actualizarla.</p>
+          <p class="admin-ayuda-json">Se actualiza sola mientras edita.</p>
           <iframe id="iframe-previa" class="admin-iframe-previa" title="Vista previa de la encuesta"></iframe>
         </div>
       </div>
