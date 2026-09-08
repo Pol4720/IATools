@@ -1,0 +1,84 @@
+{
+  "idioma": "es",
+  "fecha": "2026-09-02T15:12:51.778Z",
+  "respuestas": {
+    "nombre": "Laura Marta Rodríguez Noda",
+    "area_especialidad": "Inmunologia, Microbiología ",
+    "rol_actual": "Directora de Investigaciones Biológicas ",
+    "anos_experiencia": "15a30",
+    "contacto_opcional": "lmrodriguez@finlay.edu.cu",
+    "productos_interes": [
+      "vacunas",
+      "biofarmacos",
+      "ensayos_clinicos"
+    ],
+    "marcos_regulatorios": [
+      "cecmed",
+      "fda",
+      "ema",
+      "oms_ops",
+      "ich",
+      "iso"
+    ],
+    "alcance_geografico": "global",
+    "funciones_principales": [
+      "consulta_experta",
+      "vigilancia_normativa",
+      "redaccion_documentos",
+      "analisis_brechas",
+      "comparar_agencias",
+      "simular_auditoria",
+      "capacitacion",
+      "clasificacion_riesgo",
+      "traduccion_simplificacion",
+      "evaluar_ia_propia",
+      "informes_personalizados",
+      "rastreo_bibliografico",
+      "checklist_tramites"
+    ],
+    "prioridad_top3": "Responder preguntas, revisar documentos, generar informes",
+    "fuentes_prioritarias": [
+      "cecmed_normas",
+      "ich_guias",
+      "fda_guias",
+      "ema_guias",
+      "oms_publicaciones",
+      "literatura_cientifica",
+      "normas_iso"
+    ],
+    "idiomas_fuentes": [
+      "espanol",
+      "ingles"
+    ],
+    "frecuencia_actualizacion": "tiempo_real",
+    "modo_interaccion": [
+      "conversacion",
+      "informes_descargables",
+      "integracion_herramientas"
+    ],
+    "dispositivo_uso": [
+      "computadora",
+      "telefono",
+      "tableta"
+    ],
+    "disponibilidad_offline": "ambas",
+    "tono": "depende",
+    "nivel_detalle_defecto": "completas",
+    "citar_fuentes_siempre": "siempre",
+    "reconocer_incertidumbre": "decir_incertidumbre",
+    "criticidad_error": "5",
+    "mecanismos_verificacion": [
+      "enlaces_fuente",
+      "fecha_actualizacion",
+      "registro_auditoria"
+    ],
+    "uso_previsto": "borrador_revisado",
+    "datos_confidenciales": "nunca_salir",
+    "situacion_frecuente": "Asesoría para la escritura de un dossier",
+    "ejemplos_preguntas": "Documentos regulatorios para vacunas ARNm\nActualización sobre últimas vacunas anti-neumococicas licenciadas",
+    "imprescindible": "Veracidad",
+    "deseable_no_esencial": "Actualidad ",
+    "preocupaciones": "Uso de datos",
+    "sin_limites": "Que me escribiera un proyecto \nQue me facilitara documentos oficiales\nQue me analizara resultados \nQue me escribiera io revisara informes"
+  }
+}

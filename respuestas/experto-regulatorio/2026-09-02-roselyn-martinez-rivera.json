@@ -1,0 +1,90 @@
+{
+  "idioma": "es",
+  "fuente": "PDF rellenado manualmente. Un par de respuestas de texto libre pudieron quedar cortadas por un límite de 100 caracteres del generador de PDF (ya corregido); se señalan en el propio texto.",
+  "respuestas": {
+    "nombre": "Roselyn Martinez Rivera",
+    "area_especialidad": "Calidad, regulatorios, Transferencia de tecnologia, BPF, procesos de gestion, auditorias BP [texto cortado por un límite de caracteres del generador de PDF que ya se corrigió; se transcribe tal como aparece en el documento original, sin completar por conjetura]",
+    "rol_actual": "Vicedirector General Estandar regulatorio",
+    "anos_experiencia": "mas30",
+    "contacto_opcional": "romartinez@finlay.edu.cu",
+    "productos_interes": [
+      "vacunas",
+      "bpm"
+    ],
+    "productos_interes__otro_texto": "Transferencia de Tecnologias, auditorias GMP",
+    "marcos_regulatorios": [
+      "cecmed",
+      "fda",
+      "ema",
+      "oms_ops",
+      "ich",
+      "iso",
+      "otras_agencias"
+    ],
+    "alcance_geografico": "global",
+    "funciones_principales": [
+      "consulta_experta",
+      "vigilancia_normativa",
+      "redaccion_documentos",
+      "analisis_brechas",
+      "comparar_agencias",
+      "simular_auditoria",
+      "capacitacion",
+      "clasificacion_riesgo",
+      "farmacovigilancia_seguimiento",
+      "traduccion_simplificacion",
+      "evaluar_ia_propia",
+      "informes_personalizados",
+      "rastreo_bibliografico",
+      "checklist_tramites"
+    ],
+    "fuentes_prioritarias": [
+      "cecmed_normas",
+      "documentos_internos",
+      "ich_guias",
+      "fda_guias",
+      "ema_guias",
+      "oms_publicaciones",
+      "gaceta_oficial",
+      "literatura_cientifica",
+      "normas_iso",
+      "ia_regulacion_internacional"
+    ],
+    "idiomas_fuentes": [
+      "espanol",
+      "ingles"
+    ],
+    "frecuencia_actualizacion": "tiempo_real",
+    "modo_interaccion": [
+      "conversacion",
+      "formularios",
+      "informes_descargables",
+      "notificaciones",
+      "panel_visual",
+      "integracion_herramientas"
+    ],
+    "dispositivo_uso": [
+      "computadora",
+      "telefono",
+      "tableta"
+    ],
+    "disponibilidad_offline": "ambas",
+    "tono": "depende",
+    "nivel_detalle_defecto": "preguntar",
+    "citar_fuentes_siempre": "siempre",
+    "reconocer_incertidumbre": "decir_incertidumbre",
+    "criticidad_error": "5",
+    "mecanismos_verificacion": [
+      "enlaces_fuente",
+      "fecha_actualizacion"
+    ],
+    "uso_previsto": "ambos_segun_caso",
+    "datos_confidenciales": "nunca_salir",
+    "ejemplos_preguntas": "1. relacion entre particulas subvisibles y la esterilidad de vacunas adjuvadas\n2. metodos rapidos [texto cortado por un límite de caracteres del generador de PDF que ya se corrigió; se transcribe tal como aparece en el documento original, sin completar por conjetura]",
+    "imprescindible": "rapidez, actualizacion, global, acceso, facil descarga de resultados",
+    "deseable_no_esencial": "interaccion verbal",
+    "preocupaciones": "uso de mis datos",
+    "sin_limites": "a partir de una idea crear, organizar,  generar entregables, sin limites de interacciones"
+  },
+  "fecha": "2026-09-02T00:00:00.000Z"
+}

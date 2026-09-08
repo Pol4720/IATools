@@ -35,6 +35,14 @@ COLOR_TEXTO = HexColor("#1f2933")
 COLOR_TEXTO_SUAVE = HexColor("#52606d")
 COLOR_BORDE = HexColor("#a9b7bb")
 
+# reportlab limita cada AcroForm.textfield() a 100 caracteres si no se
+# especifica "maxlen" (ver reportlab.pdfbase.acroform.AcroForm.textfield).
+# Sin este ajuste, cualquier respuesta de texto libre un poco extensa
+# quedaba truncada a mitad de palabra, sin ningún aviso para quien
+# respondía. Estos límites son generosos a propósito.
+MAXLEN_TEXTO = 500
+MAXLEN_PARRAFO = 6000
+
 def textos_ui(slug: str) -> dict:
     url = f"https://{REPO_OWNER_PAGES}/{slug}/"
     return {
@@ -219,6 +227,13 @@ class GeneradorPdf:
             forceBorder=True,
             fontSize=10,
             fieldFlags="multiline" if multilinea else 0,
+            # reportlab limita cada campo a 100 caracteres si no se indica
+            # maxlen explícitamente: con ese valor por defecto, cualquier
+            # respuesta de texto libre un poco extensa quedaba cortada a
+            # mitad de palabra sin ningún aviso. Los párrafos necesitan
+            # espacio de sobra; los campos de una sola línea, bastante menos,
+            # pero igual muy por encima de lo que ocuparía un nombre o correo.
+            maxlen=MAXLEN_PARRAFO if multilinea else MAXLEN_TEXTO,
         )
         self.y -= alto + 14
 
@@ -289,6 +304,7 @@ class GeneradorPdf:
                     fillColor=None,
                     forceBorder=True,
                     fontSize=9,
+                    maxlen=MAXLEN_TEXTO,
                 )
                 self.y -= 20
         self.y -= 8

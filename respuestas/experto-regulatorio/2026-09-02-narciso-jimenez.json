@@ -1,0 +1,92 @@
+{
+  "idioma": "es",
+  "fuente": "PDF rellenado manualmente. Varias respuestas de texto libre quedaron cortadas por un límite de 100 caracteres del generador de PDF (ya corregido); se señalan una por una en el propio texto.",
+  "respuestas": {
+    "nombre": "Narciso A. Jiménez",
+    "area_especialidad": "investigaciones clínicas",
+    "rol_actual": "especialista principal de investigaciones clínicas",
+    "anos_experiencia": "menos5",
+    "contacto_opcional": "njimenez@finlay.edu.cu",
+    "productos_interes": [
+      "vacunas",
+      "ensayos_clinicos",
+      "farmacovigilancia"
+    ],
+    "marcos_regulatorios": [
+      "cecmed",
+      "fda",
+      "ema",
+      "oms_ops",
+      "ich",
+      "ia_regulacion",
+      "otras_agencias"
+    ],
+    "alcance_geografico": "cuba_internacional",
+    "funciones_principales": [
+      "consulta_experta",
+      "vigilancia_normativa",
+      "redaccion_documentos",
+      "analisis_brechas",
+      "comparar_agencias",
+      "simular_auditoria",
+      "capacitacion",
+      "clasificacion_riesgo",
+      "farmacovigilancia_seguimiento",
+      "traduccion_simplificacion",
+      "evaluar_ia_propia",
+      "informes_personalizados",
+      "rastreo_bibliografico",
+      "checklist_tramites"
+    ],
+    "prioridad_top3": "Las dos primeras, y rastrear literatura científica y regulatoria relacionada con un producto o tecno [texto cortado por un límite de caracteres del generador de PDF que ya se corrigió; se transcribe tal como aparece en el documento original, sin completar por conjetura]",
+    "fuentes_prioritarias": [
+      "cecmed_normas",
+      "documentos_internos",
+      "ich_guias",
+      "fda_guias",
+      "ema_guias",
+      "oms_publicaciones",
+      "gaceta_oficial",
+      "literatura_cientifica",
+      "normas_iso",
+      "ia_regulacion_internacional"
+    ],
+    "idiomas_fuentes": [
+      "espanol",
+      "ingles",
+      "portugues",
+      "frances"
+    ],
+    "frecuencia_actualizacion": "semanal",
+    "modo_interaccion": [
+      "conversacion",
+      "informes_descargables",
+      "notificaciones",
+      "panel_visual",
+      "integracion_herramientas"
+    ],
+    "dispositivo_uso": [
+      "computadora",
+      "telefono"
+    ],
+    "disponibilidad_offline": "ambas",
+    "tono": "formal",
+    "nivel_detalle_defecto": "preguntar",
+    "citar_fuentes_siempre": "siempre",
+    "reconocer_incertidumbre": "decir_incertidumbre",
+    "criticidad_error": "4",
+    "mecanismos_verificacion": [
+      "enlaces_fuente"
+    ],
+    "uso_previsto": "ambos_segun_caso",
+    "datos_confidenciales": "nunca_salir",
+    "ejemplos_preguntas": "Ante la no disponibilidad de PI en el estudio PCV 11 lactantes para completar el esquema con dosis [texto cortado por un límite de caracteres del generador de PDF que ya se corrigió; se transcribe tal como aparece en el documento original, sin completar por conjetura]",
+    "situacion_frecuente": "Decisión de PCV 11adultos con el no cumplimiento de la hipótesis en la fase II",
+    "imprescindible": "Servicio de consultas para la toma de decisiones que se ajusten al marco regulatorio",
+    "deseable_no_esencial": "Que además de asesorar genere las respuesta con soluciones redactadas por ejemplo para hacer modific [texto cortado por un límite de caracteres del generador de PDF que ya se corrigió; se transcribe tal como aparece en el documento original, sin completar por conjetura]",
+    "preocupaciones": "Errores",
+    "sin_limites": "Que sea capaz de diagnosticar nuestros errores con la información que se le brinda y de soluciones q [texto cortado por un límite de caracteres del generador de PDF que ya se corrigió; se transcribe tal como aparece en el documento original, sin completar por conjetura]",
+    "comentarios_finales": "Entrenar la herramienta con verdaderos expertos en temas regulatorios"
+  },
+  "fecha": "2026-09-02T00:00:00.000Z"
+}
